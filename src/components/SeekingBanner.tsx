@@ -19,11 +19,15 @@ export default function SeekingBanner() {
           background: "linear-gradient(135deg, rgba(182,0,168,0.08), rgba(118,33,176,0.05), rgba(190,76,0,0.05))",
         }}
       >
-        <p className="text-[#BBCCD7] text-xs uppercase tracking-widest font-medium mb-2">Currently Seeking</p>
-        <p className="text-[#D7E2EA] font-medium text-base sm:text-lg md:text-xl leading-relaxed mb-4">
-          Full Stack Developer / AI Engineering Internships
-          <span className="block text-[#646973] text-sm sm:text-base font-light mt-1">Remote & On-site Opportunities</span>
-        </p>
+        <p className="text-[#BBCCD7] text-xs uppercase tracking-widest font-medium mb-3">Available For</p>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 mb-4">
+          {["Full Stack Internships", "AI Engineering Internships", "Freelance Projects"].map((item) => (
+            <span key={item} className="flex items-center gap-1.5 text-[#D7E2EA] text-sm sm:text-base font-light">
+              <span className="text-[#BBCCD7] text-xs">✓</span>
+              {item}
+            </span>
+          ))}
+        </div>
         <div className="flex flex-wrap gap-3 justify-center">
           {links.map((link) => (
             <a

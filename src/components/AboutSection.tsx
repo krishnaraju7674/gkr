@@ -123,8 +123,8 @@ export default function AboutSection() {
         <FadeIn delay={0.2} y={30} className="w-full max-w-[500px] mt-8 sm:mt-10 md:mt-12">
           <div className="grid grid-cols-4 gap-3">
             {[
-              { val: 10, suf: "+", label: "Projects" },
-              { val: 5, suf: "+", label: "Clients" },
+              { val: 19, suf: "+", label: "Projects" },
+              { val: 2, suf: "+", label: "Years Building" },
               { val: 8, suf: "+", label: "Certifications" },
               { val: 8.0, label: "CGPA" },
             ].map((stat, i) => (

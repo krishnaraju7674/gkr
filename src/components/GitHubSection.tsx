@@ -44,7 +44,7 @@ export default function GitHubSection() {
             <>
               <StatBox value={stats.public_repos} label="Repositories" />
               <StatBox value={stats.followers} label="Followers" />
-              <StatBox value={stats.following} label="Following" />
+              <StatBox value={"500+"} label="Contributions" />
             </>
           ) : (
             <p className="text-[#646973] text-xs">Loading stats...</p>
@@ -67,7 +67,7 @@ export default function GitHubSection() {
   );
 }
 
-function StatBox({ value, label }: { value: number; label: string }) {
+function StatBox({ value, label }: { value: number | string; label: string }) {
   return (
     <div className="text-center p-5 rounded-2xl border border-[#1A1A1A] min-w-[100px]">
       <p className="text-[#BBCCD7] font-black text-xl sm:text-2xl">{value}</p>
