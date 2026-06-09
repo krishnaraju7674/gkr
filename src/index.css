@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root { background: var(--bg); color: var(--text); }
+html { scroll-behavior: smooth; }
+body { font-family: "Kanit", sans-serif; }
+
+:root {
+  --bg: #0C0C0C;
+  --text: #D7E2EA;
+  --text-secondary: #BBCCD7;
+  --text-muted: #646973;
+  --border: #1A1A1A;
+  --card-bg: #0C0C0C;
+  --hero-heading: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
+}
+
+[data-theme="light"] {
+  --bg: #F5F5F0;
+  --text: #1A1A1A;
+  --text-secondary: #444;
+  --text-muted: #777;
+  --border: #D0D0C8;
+  --card-bg: #FFFFFF;
+  --hero-heading: linear-gradient(180deg, #444 0%, #1A1A1A 100%);
+}
+
+.hero-heading {
+  background: var(--hero-heading);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  z-index: 1000;
+  padding: 0.75rem 1.5rem;
+  background: #BBCCD7;
+  color: #0C0C0C;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+.skip-link:focus { top: 0; }
+
+*:focus-visible {
+  outline: 2px solid #BBCCD7;
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .skip-link:focus { top: 0; }
+}
