@@ -3,6 +3,7 @@ import FadeIn from "./FadeIn";
 import ParticleBackground from "./ParticleBackground";
 import { useTheme } from "./ThemeContext";
 import { smoothScrollTo } from "./smoothScroll";
+import ResumePreview from "./ResumePreview";
 
 const roles = [
   "Full Stack Developer",
@@ -65,6 +66,7 @@ function ScrollIndicator() {
 
 export default function HeroSection() {
   const { theme, toggle } = useTheme();
+  const [showResume, setShowResume] = useState(false);
   const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     const el = document.querySelector(href);
@@ -162,10 +164,8 @@ export default function HeroSection() {
 
             <FadeIn delay={0.6} y={20}>
               <div className="flex flex-wrap gap-3 sm:gap-4 justify-center md:justify-start">
-                <a
-                  href="/resume.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => setShowResume(true)}
                   className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-medium uppercase tracking-wider text-white transition-all duration-300"
                   style={{
                     background: "linear-gradient(123deg, #18011F 7%, #B600A8 37%, #7621B0 72%, #BE4C00 100%)",
@@ -175,7 +175,7 @@ export default function HeroSection() {
                   }}
                 >
                   Resume
-                </a>
+                </button>
                 <a
                   href="https://github.com/krishnaraju7674"
                   target="_blank"
@@ -212,6 +212,7 @@ export default function HeroSection() {
       </div>
 
       <ScrollIndicator />
+      {showResume && <ResumePreview onClose={() => setShowResume(false)} />}
     </section>
   );
 }

@@ -5,6 +5,12 @@ import AnimatedCounter from "./AnimatedCounter";
 
 import { motion } from "framer-motion";
 
+const skillLevelText = (level: number) => {
+  if (level >= 90) return "Advanced";
+  if (level >= 80) return "Proficient";
+  return "Intermediate";
+};
+
 const skillsData = [
   { name: "Next.js / React.js", level: 98, dot: "#61DAFB" },
   { name: "TypeScript / Vite", level: 94, dot: "#3178C6" },
@@ -76,10 +82,13 @@ export default function AboutSection() {
             className="text-[#D7E2EA] font-light text-center leading-relaxed"
             style={{ fontSize: "clamp(0.85rem, 1.5vw, 1.1rem)" }}
           >
-            i&apos;m <span className="font-semibold text-[#BBCCD7]">krishnam raju</span>, an information technology student at{" "}
-            <span className="font-semibold text-[#BBCCD7]">vignana bharathi institute of technology</span> and a{" "}
-            <span className="font-semibold text-[#BBCCD7]">full stack developer & ai product builder</span>{" "}
-            passionate about creating real-world products that make an impact.
+            Full-stack developer focused on building AI-powered products using{" "}
+            <span className="font-semibold text-[#BBCCD7]">Next.js</span>,{" "}
+            <span className="font-semibold text-[#BBCCD7]">Supabase</span>,{" "}
+            <span className="font-semibold text-[#BBCCD7]">TypeScript</span>, and modern cloud technologies.{" "}
+            Information Technology student at{" "}
+            <span className="font-semibold text-[#BBCCD7]">Vignana Bharathi Institute of Technology</span>{" "}
+            with a passion for shipping production-grade products.
           </p>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full">
@@ -106,7 +115,7 @@ export default function AboutSection() {
         </FadeIn>
 
         <AnimatedText
-          text="i specialize in ai-assisted web platforms, secure authentication systems, and polished full-stack product workflows. from backend architecture to frontend interfaces, i bridge the gap between complex logic and intuitive experiences — building products that feel alive."
+          text="I specialize in AI-assisted web platforms, secure authentication systems, and polished full-stack product workflows. From backend architecture to frontend interfaces, I bridge the gap between complex logic and intuitive experiences — building products that feel alive."
           className="text-[#D7E2EA] font-medium text-center leading-relaxed max-w-[560px] mt-8 sm:mt-10 md:mt-12"
           style={{ fontSize: "clamp(0.9rem, 1.8vw, 1.2rem)" }}
         />
@@ -194,7 +203,7 @@ export default function AboutSection() {
                           <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: skill.dot }} />
                           <span>{skill.name}</span>
                         </span>
-                        <span className="text-[#BBCCD7] font-bold text-xs">{skill.level}%</span>
+                        <span className="text-[#BBCCD7] font-bold text-xs">{skillLevelText(skill.level)}</span>
                       </div>
                       <div className="w-full h-1.5 bg-[#1A1A1A] rounded-full overflow-hidden">
                         <motion.div

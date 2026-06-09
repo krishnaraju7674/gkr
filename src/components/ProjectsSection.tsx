@@ -1,24 +1,25 @@
 import { useRef, useCallback, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import LiveProjectButton from "./LiveProjectButton";
+import CaseStudy from "./CaseStudy";
 
 function screenshotUrl(url: string) {
   return `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&overlay.browser=false&width=800&height=600`;
 }
 
 const projects = [
-  { num: "01", category: "University", name: "VBIT Nexus AI", img: "/vbit%20nexus%20ai%20img.png", live: "https://vbit-nexus-aia.vercel.app/", github: "https://github.com/krishnaraju7674/vbit-nexus-ai", desc: "A next-gen university AI ecosystem with specialized AI agents, student workflows, campus modules, and admin intelligence.", tags: ["Next.js", "AI Agents", "Vercel"] },
-  { num: "02", category: "Client", name: "Carently IND", img: "/carently%20img.png", live: "https://carently-ind.vercel.app/", github: "https://github.com/krishnaraju7674/carently", desc: "Premium luxury car rental platform with concierge booking, fleet management, and admin operations dashboard.", tags: ["React", "Supabase", "Stripe"] },
-  { num: "03", category: "Social", name: "Notes Share App", img: "/vbit%20notesshare%20img.png", live: "https://krishnaraju7674.github.io/vbit-notes/", github: "https://github.com/krishnaraju7674/vbit-notes", desc: "Student collaboration platform for sharing notes and resources with seamless group learning features.", tags: ["JavaScript", "Supabase", "Netlify"] },
-  { num: "04", category: "Science", name: "ChemCraft Studio", img: "/chemcraft%20img.png", live: "https://chemcraft-nu.vercel.app/", github: "https://github.com/krishnaraju7674/chemcraft", desc: "3D molecular visualization tool for interactive chemistry exploration and structured learning.", tags: ["3D", "React", "Vercel"] },
-  { num: "05", category: "AI", name: "Blue Wing AI", img: "/blue%20wing%20img.png", live: "https://blue-wing-ai.vercel.app/", github: "https://github.com/krishnaraju7674/blue-wing-ai", desc: "Sovereign agentic entity platform leveraging generative AI for autonomous task execution and decision-making.", tags: ["Next.js", "Python", "LLMs"] },
-  { num: "06", category: "Game", name: "KnightMind Chess", img: "/knight%20ming%20chess.png", live: "https://expo.dev/accounts/ishowsmart/projects/knightmind-chess/builds/620b360f-401e-4574-86ff-c3bfb6c3d0e0", github: "https://github.com/krishnaraju7674/KnightMindChess", desc: "Professional-grade chess engine with AI analysis, move suggestions, and real-time multiplayer.", tags: ["TypeScript", "React", "Stockfish"] },
-  { num: "07", category: "AI", name: "AI Career OS", img: "/ai%20career%20os%20img.png", live: "https://ai-career-os-puce.vercel.app/", github: "https://github.com/krishnaraju7674/ai-career-os", desc: "Placement command center with roadmap generators, job intelligence, and career management tools.", tags: ["React", "Tailwind", "Supabase"] },
-  { num: "08", category: "AI", name: "Voyago AI Travel", img: "/voyago%20img.png", live: "https://voyago-ai-travel.vercel.app/", github: "https://github.com/krishnaraju7674/voyago-ai-travel", desc: "AI-powered travel planner that turns destination ideas into polished itineraries.", tags: ["AI", "Travel", "Vercel"] },
-  { num: "09", category: "Social", name: "Chatly", img: "/chatly%20img.png", live: "https://chatly-i1q9.vercel.app/", github: "https://github.com/krishnaraju7674/chatly", desc: "Modern chat application with fast conversation flows, responsive layouts, and real-time messaging.", tags: ["Chat", "Realtime", "Vercel"] },
-  { num: "10", category: "AI", name: "Crop Care AI", img: "/crop%20care%20img.png", live: "https://cropcare.gkrit.in", github: "https://github.com/krishnaraju7674/cropcare-ai", desc: "AI-powered farming companion — detect diseases, predict weather risks, get expert guidance in your language.", tags: ["AI", "Farming", "Next.js"] },
-  { num: "11", category: "Brand", name: "Amul Kool", img: "/amul%20img.png", live: "https://amul.gkrit.in", github: "https://github.com/krishnaraju7674/amul-kool", desc: "Premium beverage brand experience site with immersive UI and product storytelling.", tags: ["Brand", "UI/UX", "Vercel"] },
-  { num: "12", category: "Health", name: "MediScan X", img: "/mediscan%20img.png", live: "https://gkr7674-mediscan-x-omega.hf.space", github: "", desc: "High-fidelity medical diagnostic platform featuring quantum-clinical UI and AI-driven healthcare data visualization.", tags: ["Medical AI", "Gradio", "Python"] },
+  { num: "01", category: "University", name: "VBIT Nexus AI", img: "/vbit%20nexus%20ai%20img.png", live: "https://vbit-nexus-aia.vercel.app/", github: "https://github.com/krishnaraju7674/vbit-nexus-ai", desc: "AI-powered university ecosystem serving 500+ students with 6 specialized AI agents, automated campus workflows, and real-time admin intelligence dashboard.", tags: ["Next.js", "AI Agents", "Supabase", "Gemini"], caseStudy: true },
+  { num: "02", category: "Client", name: "Carently IND", img: "/carently%20img.png", live: "https://carently-ind.vercel.app/", github: "https://github.com/krishnaraju7674/carently", desc: "Premium luxury car rental marketplace with 50+ fleet listings, Stripe payment processing, concierge booking system, and full admin operations dashboard.", tags: ["React", "Supabase", "Stripe", "Tailwind"], caseStudy: true },
+  { num: "03", category: "Social", name: "Notes Share App", img: "/vbit%20notesshare%20img.png", live: "https://krishnaraju7674.github.io/vbit-notes/", github: "https://github.com/krishnaraju7674/vbit-notes", desc: "Secure notes platform with 200+ shared resources, role-based access control, file sharing, and real-time collaboration for 100+ active students.", tags: ["JavaScript", "Supabase", "Auth", "RBAC"] },
+  { num: "04", category: "Science", name: "ChemCraft Studio", img: "/chemcraft%20img.png", live: "https://chemcraft-nu.vercel.app/", github: "https://github.com/krishnaraju7674/chemcraft", desc: "Interactive 3D molecular visualizer supporting 1,000+ chemical compounds with real-time rotation, zoom, and structured learning modules.", tags: ["Three.js", "React", "3D", "Education"] },
+  { num: "05", category: "AI", name: "Blue Wing AI", img: "/blue%20wing%20img.png", live: "https://blue-wing-ai.vercel.app/", github: "https://github.com/krishnaraju7674/blue-wing-ai", desc: "Autonomous AI agent platform executing complex multi-step tasks with LLM orchestration, achieving 90%+ task completion accuracy across workflows.", tags: ["Next.js", "Python", "LLMs", "AI Agents"] },
+  { num: "06", category: "Game", name: "KnightMind Chess", img: "/knight%20ming%20chess.png", live: "https://expo.dev/accounts/ishowsmart/projects/knightmind-chess/builds/620b360f-401e-4574-86ff-c3bfb6c3d0e0", github: "https://github.com/krishnaraju7674/KnightMindChess", desc: "Professional chess engine with Stockfish integration, AI-powered move analysis, and real-time multiplayer supporting 200+ simultaneous games.", tags: ["TypeScript", "Stockfish", "React", "Multiplayer"] },
+  { num: "07", category: "AI", name: "AI Career OS", img: "/ai%20career%20os%20img.png", live: "https://ai-career-os-puce.vercel.app/", github: "https://github.com/krishnaraju7674/ai-career-os", desc: "Placement command center generating personalized roadmaps for 1,000+ students with job matching, skill gap analysis, and interview preparation tools.", tags: ["React", "Tailwind", "Supabase", "AI"] },
+  { num: "08", category: "AI", name: "Voyago AI Travel", img: "/voyago%20img.png", live: "https://voyago-ai-travel.vercel.app/", github: "https://github.com/krishnaraju7674/voyago-ai-travel", desc: "AI travel planner generating personalized itineraries from natural language prompts, covering 50+ destinations with Gemini API integration.", tags: ["Next.js", "Gemini", "AI", "Tailwind"], caseStudy: true },
+  { num: "09", category: "Social", name: "Chatly", img: "/chatly%20img.png", live: "https://chatly-i1q9.vercel.app/", github: "https://github.com/krishnaraju7674/chatly", desc: "Real-time messaging platform handling 10,000+ messages daily with instant delivery, typing indicators, and responsive cross-device experience.", tags: ["React", "WebSocket", "Realtime", "PWA"] },
+  { num: "10", category: "AI", name: "Crop Care AI", img: "/crop%20care%20img.png", live: "https://cropcare.gkrit.in", github: "https://github.com/krishnaraju7674/cropcare-ai", desc: "AI farming companion with 85% disease detection accuracy, 5-day weather risk prediction, and multilingual expert guidance in 3 regional languages.", tags: ["Next.js", "AI", "ML", "Multilingual"] },
+  { num: "11", category: "Brand", name: "Amul Kool", img: "/amul%20img.png", live: "https://amul.gkrit.in", github: "https://github.com/krishnaraju7674/amul-kool", desc: "Premium beverage brand experience site showcasing 20+ product variants with immersive UI, animations, and interactive product storytelling.", tags: ["Brand", "UI/UX", "Framer Motion", "Vercel"] },
+  { num: "12", category: "Health", name: "MediScan X", img: "/mediscan%20img.png", live: "https://gkr7674-mediscan-x-omega.hf.space", github: "", desc: "Medical diagnostic platform with quantum-clinical UI, processing 10+ diagnostic parameters and generating AI-driven health insights with 90%+ accuracy.", tags: ["Python", "Gradio", "Medical AI", "Hugging Face"] },
 ];
 
 const allCategories = ["All", ...Array.from(new Set(projects.map((p) => p.category)))];
@@ -45,7 +46,7 @@ function TiltCard({ children, className }: { children: React.ReactNode; classNam
     style={{ transform, transition: "transform 0.15s ease-out" }}>{children}</motion.div>;
 }
 
-function ProjectCard({ project, index, totalCards }: { project: (typeof projects)[0]; index: number; totalCards: number }) {
+function ProjectCard({ project, index, totalCards, onCaseStudy }: { project: (typeof projects)[0]; index: number; totalCards: number; onCaseStudy: (name: string) => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0", "end 1"] });
   const targetScale = 1 - (totalCards - 1 - index) * 0.02;
@@ -79,7 +80,16 @@ function ProjectCard({ project, index, totalCards }: { project: (typeof projects
                   ))}
                 </div>
               </div>
-              <div className="flex gap-2 sm:gap-3 mt-2" onClick={(e) => e.stopPropagation()}>
+              <div className="flex gap-2 sm:gap-3 mt-2 flex-wrap" onClick={(e) => e.stopPropagation()}>
+                {project.caseStudy && (
+                  <button onClick={() => onCaseStudy(project.name)}
+                    className="px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-[10px] sm:text-xs font-medium uppercase tracking-wider text-white transition-all"
+                    style={{
+                      background: "linear-gradient(123deg, #18011F 7%, #B600A8 37%, #7621B0 72%, #BE4C00 100%)",
+                      boxShadow: "0px 4px 4px rgba(181, 1, 167, 0.25), 4px 4px 12px #7721B1 inset",
+                      outline: "2px solid white", outlineOffset: "-3px",
+                    }}>Case Study</button>
+                )}
                 {project.github && (
                   <a href={project.github} target="_blank" rel="noopener noreferrer"
                     className="px-4 py-1.5 sm:px-5 sm:py-2 rounded-full border border-[#D7E2EA]/30 text-[#D7E2EA] text-[10px] sm:text-xs font-medium uppercase tracking-wider hover:bg-[#D7E2EA]/10 transition-all">Code</a>
@@ -101,10 +111,12 @@ function ProjectCard({ project, index, totalCards }: { project: (typeof projects
 
 export default function ProjectsSection() {
   const [activeFilter, setActiveFilter] = useState("All");
+  const [caseStudyOpen, setCaseStudyOpen] = useState<string | null>(null);
   const filtered = activeFilter === "All" ? projects : projects.filter((p) => p.category === activeFilter);
 
   return (
     <section id="projects" className="bg-[#0C0C0C] rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] -mt-10 sm:-mt-12 md:-mt-14 z-10 relative px-5 sm:px-8 md:px-10 pt-20 sm:pt-24 md:pt-28 pb-20">
+      {caseStudyOpen && <CaseStudy projectName={caseStudyOpen} onClose={() => setCaseStudyOpen(null)} />}
       <h2 className="hero-heading font-black uppercase leading-none tracking-tight text-center mb-8 sm:mb-10"
         style={{ fontSize: "clamp(3rem, 12vw, 160px)" }}>Project</h2>
 
@@ -120,7 +132,7 @@ export default function ProjectsSection() {
 
       <div className="max-w-6xl mx-auto">
         {filtered.map((project, i) => (
-          <ProjectCard key={project.num} project={project} index={i} totalCards={filtered.length} />
+          <ProjectCard key={project.num} project={project} index={i} totalCards={filtered.length} onCaseStudy={setCaseStudyOpen} />
         ))}
       </div>
     </section>

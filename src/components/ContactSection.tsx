@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback } from "react";
 import { motion } from "framer-motion";
 import FadeIn from "./FadeIn";
 
@@ -9,20 +9,9 @@ const socials = [
   { label: "Email", handle: "gkr.7674@gmail.com", href: "mailto:gkr.7674@gmail.com", icon: "✉" },
 ];
 
-const testimonials = [
-  { quote: "Krishnam has a rare ability to turn complex technical requirements into intuitive, polished products.", author: "Ravi Teja", role: "Product Lead, NoviTech R&D" },
-  { quote: "He delivered a full-stack solution that exceeded expectations — clean code, thoughtful UX, shipped on time.", author: "Srinivas Rao", role: "Founder, Digital Craft Studio" },
-  { quote: "The AI dashboard transformed how we interact with data. Krishnam thinks like an engineer but designs like an artist.", author: "Ananya Sharma", role: "CTO, Nexus Labs" },
-];
+
 
 export default function ContactSection() {
-  const [ti, setTi] = useState(0);
-
-  useEffect(() => {
-    const id = setInterval(() => setTi((i) => (i + 1) % testimonials.length), 4000);
-    return () => clearInterval(id);
-  }, []);
-
   const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const f = e.currentTarget;
@@ -95,38 +84,8 @@ export default function ContactSection() {
         </FadeIn>
       </div>
 
-      <FadeIn delay={0.25} y={30} className="mt-20 max-w-4xl mx-auto">
-        <h3 className="text-[#BBCCD7] font-black uppercase text-center mb-8" style={{ fontSize: "clamp(1rem, 2.5vw, 1.5rem)" }}>Kind Words</h3>
-        <div className="relative min-h-[120px]">
-          {testimonials.map((t, i) => (
-            <motion.div key={t.author}
-              initial={{ opacity: 0, y: 10 }}
-              animate={i === ti ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
-              transition={{ duration: 0.5 }}
-              className={`absolute inset-0 p-5 sm:p-6 rounded-2xl border border-[#1A1A1A] flex flex-col ${i === ti ? "flex" : "hidden"}`}>
-              <p className="text-[#D7E2EA] font-light text-xs sm:text-sm leading-relaxed italic opacity-80 flex-1">&ldquo;{t.quote}&rdquo;</p>
-              <div className="mt-4 pt-4 border-t border-[#1A1A1A] flex items-center justify-between">
-                <div>
-                  <p className="text-[#BBCCD7] font-semibold text-xs uppercase tracking-wide">{t.author}</p>
-                  <p className="text-[#646973] text-xs mt-0.5">{t.role}</p>
-                </div>
-                <div className="flex gap-1.5">
-                  {testimonials.map((_, di) => (
-                    <button key={di} onClick={() => setTi(di)}
-                      className={`w-2 h-2 rounded-full transition-all ${di === ti ? "bg-[#BBCCD7] w-4" : "bg-[#1A1A1A]"}`} />
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </FadeIn>
 
-      <FadeIn delay={0.3} y={20} className="flex justify-center mt-12">
-        <a href="https://github.com/krishnaraju7674" target="_blank" rel="noopener noreferrer">
-          <img src="https://ghchart.rshah.org/krishnaraju7674" alt="GitHub Contributions" className="rounded-xl border border-[#1A1A1A] max-w-full" loading="lazy" />
-        </a>
-      </FadeIn>
+
     </section>
   );
 }
