@@ -4,20 +4,20 @@ const articles = [
   {
     title: "How I Built VBIT Nexus AI — A Multi-Agent University Platform",
     desc: "Architecting 6 specialized AI agents with Next.js, Supabase, and Gemini API to serve 500+ students. Lessons in prompt engineering, agent orchestration, and production deployment.",
-    readTime: "8 min",
-    url: "https://gkr7674.hashnode.dev/building-vbit-nexus-ai",
+    url: "https://gkr7674.hashnode.dev/",
+    published: false,
   },
   {
     title: "Supabase vs MongoDB: Choosing the Right Backend for Your AI App",
     desc: "A practical comparison based on building 12+ production projects. When to use relational vs document databases for AI-powered applications.",
-    readTime: "6 min",
-    url: "https://gkr7674.hashnode.dev/supabase-vs-mongodb",
+    url: "https://gkr7674.hashnode.dev/",
+    published: false,
   },
   {
     title: "Building AI Agents with Gemini: A Practical Guide",
     desc: "Hands-on guide to building production-ready AI agents using Gemini API, structured prompting, and tool integration. Real code examples from Voyago AI Travel.",
-    readTime: "10 min",
-    url: "https://gkr7674.hashnode.dev/building-ai-agents-gemini",
+    url: "https://gkr7674.hashnode.dev/",
+    published: false,
   },
 ];
 
@@ -42,14 +42,14 @@ export default function BlogSection() {
               <a href={article.url} target="_blank" rel="noopener noreferrer"
                 className="block p-5 rounded-2xl border border-[#1A1A1A] h-full flex flex-col hover:border-[#D7E2EA]/20 transition-colors group">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="text-[#646973] text-[10px] uppercase tracking-wider font-medium">{article.readTime}</span>
+                  <span className="text-[#646973] text-[10px] uppercase tracking-wider font-medium">Coming Soon</span>
                 </div>
                 <h3 className="text-[#D7E2EA] font-semibold text-xs sm:text-sm leading-relaxed mb-2 group-hover:text-[#BBCCD7] transition-colors">
                   {article.title}
                 </h3>
                 <p className="text-[#646973] text-xs font-light leading-relaxed flex-1">{article.desc}</p>
                 <span className="text-[#BBCCD7] text-[10px] uppercase tracking-wider mt-3 group-hover:opacity-100 opacity-60 transition-opacity">
-                  Read More →
+                  Visit Blog →
                 </span>
               </a>
             </FadeIn>

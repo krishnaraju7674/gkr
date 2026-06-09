@@ -135,17 +135,24 @@ export default function CaseStudy({ projectName, onClose }: { projectName: strin
 
           <div className="mb-6">
             <h3 className="text-[#BBCCD7] font-semibold text-xs uppercase tracking-wide mb-3">Architecture</h3>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col items-center gap-0">
               {data.architecture.map((a, i) => (
-                <div key={a.layer} className="flex items-center gap-3 p-2.5 rounded-xl border border-[#1A1A1A]">
-                  <span className="text-[#646973] text-xs font-mono w-8 shrink-0">{i + 1}</span>
-                  <span className="text-[#BBCCD7] text-xs uppercase tracking-wider font-medium w-24 shrink-0">{a.layer}</span>
-                  <span className="text-[#D7E2EA] text-xs opacity-80">{a.tech}</span>
+                <div key={a.layer} className="flex flex-col items-center w-full">
+                  <div className="flex items-center gap-3 p-2.5 rounded-xl border border-[#1A1A1A] bg-[#0C0C0C] w-full">
+                    <span className="text-[#646973] text-xs font-mono w-8 shrink-0">{i + 1}</span>
+                    <span className="text-[#BBCCD7] text-xs uppercase tracking-wider font-medium w-24 shrink-0">{a.layer}</span>
+                    <span className="text-[#D7E2EA] text-xs opacity-80">{a.tech}</span>
+                  </div>
+                  {i < data.architecture.length - 1 && (
+                    <div className="flex flex-col items-center py-1">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 0L8 16M8 16L4 12M8 16L12 12" stroke="url(#arrowGrad)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                  )}
                 </div>
               ))}
-              <div className="flex items-center gap-3 px-3 py-2">
-                <div className="w-full h-[1px] bg-gradient-to-r from-[#B600A8] via-[#7621B0] to-[#BE4C00]" />
-              </div>
+              <svg width="0" height="0"><defs><linearGradient id="arrowGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#B600A8"/><stop offset="100%" stopColor="#7621B0"/></linearGradient></defs></svg>
             </div>
           </div>
 

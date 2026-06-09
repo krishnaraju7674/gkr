@@ -1,28 +1,31 @@
 import { useEffect, useState } from "react";
 import FadeIn from "./FadeIn";
 
-interface GitHubStats {
-  public_repos: number;
-  followers: number;
-  following: number;
-  total_stars: number;
-}
-
 export default function GitHubSection() {
-  const [stats, setStats] = useState<GitHubStats | null>(null);
+  const [repos, setRepos] = useState<number | null>(null);
+  const [followers, setFollowers] = useState<number | null>(null);
+  const [stars, setStars] = useState<number | null>(null);
 
   useEffect(() => {
+    let cancelled = false;
     fetch("https://api.github.com/users/krishnaraju7674")
       .then((r) => r.json())
-      .then((data) => {
-        setStats({
-          public_repos: data.public_repos ?? 0,
-          followers: data.followers ?? 0,
-          following: data.following ?? 0,
-          total_stars: 0,
-        });
+      .then((user) => {
+        if (cancelled) return;
+        setRepos(user.public_repos ?? 0);
+        setFollowers(user.followers ?? 0);
       })
       .catch(() => {});
+    fetch("https://api.github.com/users/krishnaraju7674/repos?per_page=100")
+      .then((r) => r.json())
+      .then((data) => {
+        if (cancelled) return;
+        if (Array.isArray(data)) {
+          setStars(data.reduce((sum: number, r: { stargazers_count?: number }) => sum + (r.stargazers_count ?? 0), 0));
+        }
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
   }, []);
 
   return (
@@ -40,11 +43,11 @@ export default function GitHubSection() {
           </p>
         </FadeIn>
         <div className="flex flex-wrap justify-center gap-4 sm:gap-6 mb-10">
-          {stats ? (
+          {repos !== null ? (
             <>
-              <StatBox value={stats.public_repos} label="Repositories" />
-              <StatBox value={stats.followers} label="Followers" />
-              <StatBox value={"500+"} label="Contributions" />
+              <StatBox value={repos} label="Repositories" />
+              <StatBox value={followers ?? "—"} label="Followers" />
+              <StatBox value={stars !== null ? stars : "—"} label="Stars Earned" />
             </>
           ) : (
             <p className="text-[#646973] text-xs">Loading stats...</p>
@@ -69,7 +72,7 @@ export default function GitHubSection() {
 
 function StatBox({ value, label }: { value: number | string; label: string }) {
   return (
-    <div className="text-center p-5 rounded-2xl border border-[#1A1A1A] min-w-[100px]">
+    <div className="text-center p-5 rounded-2xl border border-[#1A1A1A] min-w-[110px]">
       <p className="text-[#BBCCD7] font-black text-xl sm:text-2xl">{value}</p>
       <p className="text-[#646973] text-xs uppercase tracking-wider mt-1">{label}</p>
     </div>
