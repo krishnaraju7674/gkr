@@ -10,6 +10,8 @@ import EducationSection from "./components/EducationSection";
 import ExperienceSection from "./components/ExperienceSection";
 import BuildingNow from "./components/BuildingNow";
 import BlogSection from "./components/BlogSection";
+import GlowEffect from "./components/GlowEffect";
+import AIChatAssistant from "./components/AIChatAssistant";
 import GitHubSection from "./components/GitHubSection";
 import ScrollProgress from "./components/ScrollProgress";
 import BackToTop from "./components/BackToTop";
@@ -26,6 +28,7 @@ export default function App() {
         <ScrollProgress />
         <CustomCursor />
         <MouseFollower />
+        <GlowEffect />
         <HeroSection />
         <SeekingBanner />
         <TerminalSection />
@@ -40,6 +43,7 @@ export default function App() {
         <BlogSection />
         <ContactSection />
         <BackToTop />
+        <AIChatAssistant />
       </div>
     </ThemeProvider>
   );
