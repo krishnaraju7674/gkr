@@ -1,5 +1,6 @@
 import HeroSection from "./components/HeroSection";
 import SeekingBanner from "./components/SeekingBanner";
+import TerminalSection from "./components/TerminalSection";
 import MarqueeSection from "./components/MarqueeSection";
 import AboutSection from "./components/AboutSection";
 import ServicesSection from "./components/ServicesSection";
@@ -27,6 +28,7 @@ export default function App() {
         <MouseFollower />
         <HeroSection />
         <SeekingBanner />
+        <TerminalSection />
         <MarqueeSection />
         <AboutSection />
         <ServicesSection />
