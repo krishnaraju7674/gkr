@@ -224,7 +224,7 @@ export default function TerminalSection() {
   );
 
   return (
-    <section className="bg-[#0C0C0C] px-5 sm:px-8 md:px-10 py-16 sm:py-20">
+    <section id="terminal" className="bg-[var(--bg)] px-5 sm:px-8 md:px-10 py-16 sm:py-20">
       <div className="max-w-4xl mx-auto">
         <FadeIn delay={0} y={20}>
           <h2 className="hero-heading font-black uppercase leading-none tracking-tight text-center mb-3"
@@ -233,29 +233,29 @@ export default function TerminalSection() {
           </h2>
         </FadeIn>
         <FadeIn delay={0.1} y={20}>
-          <p className="text-[#646973] text-xs sm:text-sm font-light text-center mb-8 max-w-md mx-auto">
-            Try it — type <span className="text-[#BBCCD7] font-mono">help</span> to start
+          <p className="text-[var(--text-muted)] text-xs sm:text-sm font-light text-center mb-8 max-w-md mx-auto">
+            Try it — type <span className="text-[var(--text-secondary)] font-mono">help</span> to start
           </p>
         </FadeIn>
         <FadeIn delay={0.2} y={20}>
           <div
-            className="rounded-2xl border border-[#1A1A1A] overflow-hidden"
+            className="rounded-2xl border border-[var(--border)] overflow-hidden"
             onClick={() => inputRef.current?.focus()}
           >
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-[#1A1A1A] bg-[#0A0A0A]">
+            <div className="flex items-center gap-2 px-4 py-3 border-b border-[var(--border)] bg-[var(--bg-secondary)]">
               <div className="w-3 h-3 rounded-full bg-red-500/80" />
               <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
               <div className="w-3 h-3 rounded-full bg-green-500/80" />
-              <span className="text-[#646973] text-xs font-mono ml-2">krishnam@portfolio:~$</span>
+              <span className="text-[var(--text-muted)] text-xs font-mono ml-2">krishnam@portfolio:~$</span>
             </div>
-            <div className="p-4 sm:p-5 font-mono text-xs sm:text-sm leading-relaxed max-h-[400px] overflow-y-auto space-y-1 bg-[#080808]"
+            <div className="p-4 sm:p-5 font-mono text-xs sm:text-sm leading-relaxed max-h-[400px] overflow-y-auto space-y-1 bg-[var(--bg)]"
               style={{ scrollbarWidth: "thin", scrollbarColor: "#1A1A1A transparent" }}>
               {lines.map((line, i) => {
                 if (line.startsWith("$")) {
                   return (
                     <div key={i} className="flex">
                       <span className="text-green-400/70 shrink-0">krishnam@portfolio:~$ </span>
-                      <span className="text-[#D7E2EA]">{line.slice(2)}</span>
+                      <span className="text-[var(--text)]">{line.slice(2)}</span>
                     </div>
                   );
                 }
@@ -263,7 +263,7 @@ export default function TerminalSection() {
                   return <pre key={i} className="text-[#B600A8] text-[10px] sm:text-xs leading-tight">{line}</pre>;
                 }
 
-                return <div key={i} className="text-[#D7E2EA] opacity-80 whitespace-pre-wrap">{line}</div>;
+                return <div key={i} className="text-[var(--text)] opacity-80 whitespace-pre-wrap">{line}</div>;
               })}
               <form onSubmit={handleSubmit} className="flex items-center mt-1">
                 <span className="text-green-400/70 shrink-0">krishnam@portfolio:~$ </span>
@@ -273,7 +273,7 @@ export default function TerminalSection() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKey}
-                  className="flex-1 bg-transparent text-[#D7E2EA] outline-none border-none ml-0"
+                  className="flex-1 bg-transparent text-[var(--text)] outline-none border-none ml-0"
                   autoComplete="off"
                   spellCheck={false}
                   aria-label="Terminal input"

@@ -29,7 +29,7 @@ export default function GitHubSection() {
   }, []);
 
   return (
-    <section className="bg-[#0C0C0C] px-5 sm:px-8 md:px-10 py-16 sm:py-20">
+    <section className="bg-[var(--bg)] px-5 sm:px-8 md:px-10 py-16 sm:py-20">
       <div className="max-w-5xl mx-auto">
         <FadeIn delay={0} y={20}>
           <h2 className="hero-heading font-black uppercase leading-none tracking-tight text-center mb-3"
@@ -38,7 +38,7 @@ export default function GitHubSection() {
           </h2>
         </FadeIn>
         <FadeIn delay={0.1} y={20}>
-          <p className="text-[#646973] text-xs sm:text-sm font-light text-center mb-10 max-w-md mx-auto">
+          <p className="text-[var(--text-muted)] text-xs sm:text-sm font-light text-center mb-10 max-w-md mx-auto">
             Active building and contributing to open source
           </p>
         </FadeIn>
@@ -50,18 +50,18 @@ export default function GitHubSection() {
               <StatBox value={stars !== null ? stars : "—"} label="Stars Earned" />
             </>
           ) : (
-            <p className="text-[#646973] text-xs">Loading stats...</p>
+            <p className="text-[var(--text-muted)] text-xs">Loading stats...</p>
           )}
         </div>
         <FadeIn delay={0.2} y={20} className="flex justify-center">
           <a href="https://github.com/krishnaraju7674" target="_blank" rel="noopener noreferrer">
             <img src="https://ghchart.rshah.org/krishnaraju7674" alt="GitHub Contribution Chart"
-              className="rounded-xl border border-[#1A1A1A] max-w-full" loading="lazy" />
+              className="rounded-xl border border-[var(--border)] max-w-full" loading="lazy" />
           </a>
         </FadeIn>
         <FadeIn delay={0.3} y={20} className="flex justify-center mt-6">
           <a href="https://github.com/krishnaraju7674" target="_blank" rel="noopener noreferrer"
-            className="px-5 py-2.5 rounded-full border border-[#D7E2EA]/30 text-[#D7E2EA] text-xs font-medium uppercase tracking-wider hover:bg-[#D7E2EA]/10 transition-all">
+            className="px-5 py-2.5 rounded-full border border-[var(--text)]/30 text-[var(--text)] text-xs font-medium uppercase tracking-wider hover:bg-[var(--text)]/10 transition-all">
             View All Repositories
           </a>
         </FadeIn>
@@ -72,9 +72,9 @@ export default function GitHubSection() {
 
 function StatBox({ value, label }: { value: number | string; label: string }) {
   return (
-    <div className="text-center p-5 rounded-2xl border border-[#1A1A1A] min-w-[110px]">
-      <p className="text-[#BBCCD7] font-black text-xl sm:text-2xl">{value}</p>
-      <p className="text-[#646973] text-xs uppercase tracking-wider mt-1">{label}</p>
+    <div className="text-center p-5 rounded-2xl border border-[var(--border)] min-w-[110px]">
+      <p className="text-[var(--text-secondary)] font-black text-xl sm:text-2xl">{value}</p>
+      <p className="text-[var(--text-muted)] text-xs uppercase tracking-wider mt-1">{label}</p>
     </div>
   );
 }

@@ -22,7 +22,7 @@ export default function MouseFollower() {
   return (
     <div
       ref={ref}
-      className="fixed top-0 left-0 w-6 h-6 rounded-full border border-[#BBCCD7]/30 pointer-events-none z-[99] hidden md:block"
+      className="fixed top-0 left-0 w-6 h-6 rounded-full border border-primary/30 pointer-events-none z-[99] hidden md:block"
       style={{ transform: "translate3d(-100px, -100px, 0)", transition: "transform 0.15s ease-out" }}
     />
   );

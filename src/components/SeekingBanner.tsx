@@ -9,21 +9,21 @@ const links = [
 
 export default function SeekingBanner() {
   return (
-    <section className="bg-[#0C0C0C] px-5 sm:px-8 md:px-10 pb-8 sm:pb-10 -mt-1">
+    <section className="bg-[var(--bg)] px-5 sm:px-8 md:px-10 pb-8 sm:pb-10 -mt-1">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.6 }}
-        className="max-w-4xl mx-auto rounded-2xl border border-[#1A1A1A] p-5 sm:p-6 md:p-8 text-center"
+        className="max-w-4xl mx-auto rounded-2xl border border-[var(--border)] p-5 sm:p-6 md:p-8 text-center"
         style={{
           background: "linear-gradient(135deg, rgba(182,0,168,0.08), rgba(118,33,176,0.05), rgba(190,76,0,0.05))",
         }}
       >
-        <p className="text-[#BBCCD7] text-xs uppercase tracking-widest font-medium mb-3">Available For</p>
+        <p className="text-[var(--text-secondary)] text-xs uppercase tracking-widest font-medium mb-3">Available For</p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 mb-4">
           {["Full Stack Internships", "AI Engineering Internships", "Freelance Projects"].map((item) => (
-            <span key={item} className="flex items-center gap-1.5 text-[#D7E2EA] text-sm sm:text-base font-light">
-              <span className="text-[#BBCCD7] text-xs">✓</span>
+            <span key={item} className="flex items-center gap-1.5 text-[var(--text)] text-sm sm:text-base font-light">
+              <span className="text-[var(--text-secondary)] text-xs">✓</span>
               {item}
             </span>
           ))}

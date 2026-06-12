@@ -46,7 +46,7 @@ export default function MarqueeSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-[#0C0C0C] pt-24 sm:pt-32 md:pt-40 pb-10 overflow-hidden"
+      className="bg-background pt-24 sm:pt-32 md:pt-40 pb-10 overflow-hidden"
     >
       <div
         className="flex gap-3 mb-3"
@@ -57,6 +57,7 @@ export default function MarqueeSection() {
             key={`r1-${i}`}
             src={src}
             alt=""
+            aria-hidden="true"
             className="w-[420px] h-[270px] rounded-2xl object-cover shrink-0"
             loading="lazy"
           />
@@ -72,6 +73,7 @@ export default function MarqueeSection() {
             key={`r2-${i}`}
             src={src}
             alt=""
+            aria-hidden="true"
             className="w-[420px] h-[270px] rounded-2xl object-cover shrink-0"
             loading="lazy"
           />

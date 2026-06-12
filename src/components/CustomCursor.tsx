@@ -33,8 +33,8 @@ export default function CustomCursor() {
 
   return (
     <>
-      <div ref={dotRef} className="fixed top-0 left-0 w-2 h-2 rounded-full bg-[#BBCCD7] pointer-events-none z-[100] hidden md:block" style={{ transform: "translate3d(-100px, -100px, 0)" }} />
-      <div ref={ringRef} className="fixed top-0 left-0 w-8 h-8 rounded-full border border-[#BBCCD7]/30 pointer-events-none z-[100] hidden md:block" style={{ transform: "translate3d(-100px, -100px, 0)" }} />
+      <div ref={dotRef} className="fixed top-0 left-0 w-2 h-2 rounded-full bg-primary pointer-events-none z-[100] hidden md:block" style={{ transform: "translate3d(-100px, -100px, 0)" }} />
+      <div ref={ringRef} className="fixed top-0 left-0 w-8 h-8 rounded-full border border-primary/30 pointer-events-none z-[100] hidden md:block" style={{ transform: "translate3d(-100px, -100px, 0)" }} />
     </>
   );
 }

@@ -4,14 +4,24 @@ export default function LoadingScreen() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1200);
-    return () => clearTimeout(timer);
+    const hide = () => setLoading(false);
+    const timer = setTimeout(hide, 1200);
+
+    if (document.readyState === "complete") {
+      return () => clearTimeout(timer);
+    }
+
+    window.addEventListener("load", hide, { once: true });
+    return () => {
+      window.removeEventListener("load", hide);
+      clearTimeout(timer);
+    };
   }, []);
 
   if (!loading) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#0C0C0C]">
+    <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background">
       <div className="flex gap-1.5 mb-4">
         {[0, 1, 2].map((i) => (
           <div
@@ -24,7 +34,7 @@ export default function LoadingScreen() {
           />
         ))}
       </div>
-      <p className="text-[#646973] text-xs uppercase tracking-[0.3em] font-medium animate-pulse">Loading</p>
+      <p className="text-muted text-xs uppercase tracking-[0.3em] font-medium animate-pulse">Loading</p>
 
       <style>{`
         @keyframes loadBounce {

@@ -45,10 +45,23 @@ export default function AIChatAssistant() {
   ]);
   const [input, setInput] = useState("");
   const endRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  useEffect(() => {
+    if (!open) return;
+    inputRef.current?.focus();
+
+    const handleKeydown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+
+    window.addEventListener("keydown", handleKeydown);
+    return () => window.removeEventListener("keydown", handleKeydown);
+  }, [open]);
 
   const handleSend = useCallback(
     (text: string) => {
@@ -71,6 +84,7 @@ export default function AIChatAssistant() {
           boxShadow: "0 4px 20px rgba(182, 0, 168, 0.4)",
         }}
         aria-label="Open AI chat assistant"
+        aria-expanded={open}
       >
         {open ? (
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -86,28 +100,35 @@ export default function AIChatAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-            className="fixed bottom-24 right-6 z-40 w-[340px] sm:w-[380px] rounded-2xl border border-[#1A1A1A] bg-[#0C0C0C] shadow-2xl overflow-hidden"
+            className="fixed bottom-24 right-6 z-40 w-[340px] sm:w-[380px] rounded-2xl border border-border bg-card shadow-2xl overflow-hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label="AI chat assistant"
           >
-            <div className="flex items-center gap-3 px-4 py-3 border-b border-[#1A1A1A]">
+            <div className="flex items-center gap-3 px-4 py-3 border-b border-border">
               <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white"
                 style={{ background: "linear-gradient(123deg, #B600A8, #7621B0)" }}>
                 AI
               </div>
               <div>
-                <p className="text-[#D7E2EA] text-sm font-medium">Krishnam AI</p>
-                <p className="text-[#646973] text-[10px]">Ask me anything</p>
+                <p className="text-foreground text-sm font-medium">Krishnam AI</p>
+                <p className="text-muted text-[10px]">Ask me anything</p>
               </div>
             </div>
 
-            <div className="h-[320px] overflow-y-auto p-4 space-y-3"
-              style={{ scrollbarWidth: "thin", scrollbarColor: "#1A1A1A transparent" }}>
+            <div
+              className="h-[320px] overflow-y-auto p-4 space-y-3"
+              style={{ scrollbarWidth: "thin", scrollbarColor: "var(--border) transparent" }}
+              role="log"
+              aria-live="polite"
+            >
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.from === "user" ? "justify-end" : "justify-start"}`}>
                   <div
                     className={`max-w-[85%] p-3 rounded-2xl text-xs sm:text-sm leading-relaxed ${
                       msg.from === "user"
                         ? "text-white"
-                        : "text-[#D7E2EA] border border-[#1A1A1A]"
+                        : "text-foreground border border-border"
                     }`}
                     style={
                       msg.from === "user"
@@ -130,7 +151,7 @@ export default function AIChatAssistant() {
                   <button
                     key={qr}
                     onClick={() => handleSend(qr)}
-                    className="text-[10px] sm:text-xs px-2.5 py-1 rounded-full border border-[#1A1A1A] text-[#BBCCD7] hover:border-[#D7E2EA]/30 transition-colors"
+                    className="text-[10px] sm:text-xs px-2.5 py-1 rounded-full border border-border text-primary hover:border-foreground/30 transition-colors"
                   >
                     {qr}
                   </button>
@@ -140,14 +161,17 @@ export default function AIChatAssistant() {
 
             <form
               onSubmit={(e) => { e.preventDefault(); handleSend(input); setInput(""); }}
-              className="flex items-center gap-2 p-3 border-t border-[#1A1A1A]"
+              className="flex items-center gap-2 p-3 border-t border-border"
             >
               <input
+                ref={inputRef}
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask anything..."
-                className="flex-1 bg-transparent text-[#D7E2EA] text-xs sm:text-sm outline-none placeholder-[#646973]"
+                autoComplete="off"
+                aria-label="Ask the AI assistant"
+                className="flex-1 bg-transparent text-foreground text-xs sm:text-sm outline-none placeholder-muted"
               />
               <button
                 type="submit"
