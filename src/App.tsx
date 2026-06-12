@@ -9,7 +9,6 @@ import ContactSection from "./components/ContactSection";
 import EducationSection from "./components/EducationSection";
 import ExperienceSection from "./components/ExperienceSection";
 import ProjectsSection from "./components/ProjectsSection";
-import LoadingScreen from "./components/LoadingScreen";
 import ScrollProgress from "./components/ScrollProgress";
 import GlassNav from "./components/GlassNav";
 import BackToTop from "./components/BackToTop";
@@ -17,7 +16,6 @@ import { ThemeProvider } from "./components/ThemeContext";
 
 // Lazy load heavy or decorative components
 const FloatingOrbs = lazy(() => import("./components/FloatingOrbs"));
-const CursorTrail = lazy(() => import("./components/CursorTrail"));
 const CustomCursor = lazy(() => import("./components/CustomCursor"));
 const MarqueeSection = lazy(() => import("./components/MarqueeSection"));
 const BuildingNow = lazy(() => import("./components/BuildingNow"));
@@ -42,10 +40,8 @@ export default function App() {
           {/* Global background effects */}
           <Suspense fallback={null}>
             <FloatingOrbs />
-            <CursorTrail />
           </Suspense>
 
-          <LoadingScreen />
           <ScrollProgress />
           <GlassNav />
           <Suspense fallback={null}>

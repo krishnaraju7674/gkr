@@ -9,30 +9,31 @@ interface ScrollContextValue {
 const ScrollContext = createContext<ScrollContextValue>({ lenis: null });
 
 export function ScrollProvider({ children }: { children: ReactNode }) {
-  const [lenis] = useState<Lenis | null>(() => {
-    if (typeof window === "undefined") return null;
-    return new Lenis({
+  const [lenis, setLenis] = useState<Lenis | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const instance = new Lenis({
       duration: 0.8,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       wheelMultiplier: 1.0,
       touchMultiplier: 1.5,
     });
-  });
 
-  useEffect(() => {
-    if (!lenis) return;
+    setLenis(instance);
 
     let rafId = requestAnimationFrame(function onFrame(time: number) {
-      lenis.raf(time);
+      instance.raf(time);
       rafId = requestAnimationFrame(onFrame);
     });
 
     return () => {
       cancelAnimationFrame(rafId);
-      lenis.destroy();
+      instance.destroy();
     };
-  }, [lenis]);
+  }, []);
 
   return (
     <ScrollContext.Provider value={{ lenis }}>

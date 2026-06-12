@@ -14,14 +14,17 @@ export default function AnimatedText({ text, className, style }: AnimatedTextPro
     offset: ["start 0.8", "end 0.2"],
   });
 
-  const chars = text.split("");
   const opacity = useTransform(scrollYProgress, [0, 1], [0.2, 1]);
+  const words = text.split(" ");
 
   return (
     <motion.p ref={ref} className={className} style={{ ...style, opacity }}>
-      {chars.map((char, i) => (
-        <span key={i}>
-          {char === " " ? "\u00A0" : char}
+      {words.map((word, wordIndex) => (
+        <span key={wordIndex} style={{ display: "inline-block", whiteSpace: "nowrap" }}>
+          {word.split("").map((char, charIndex) => (
+            <span key={charIndex}>{char}</span>
+          ))}
+          {wordIndex < words.length - 1 && <span>{" "}</span>}
         </span>
       ))}
     </motion.p>

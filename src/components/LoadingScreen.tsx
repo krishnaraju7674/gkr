@@ -1,19 +1,26 @@
-import { useEffect, useState, useSyncExternalStore } from "react";
-
-// Use useSyncExternalStore to avoid flash on SSR/hydration
-const subscribe = () => () => {};
-const getSnapshot = () => typeof window !== "undefined" && !!sessionStorage.getItem("loaded");
-const getServerSnapshot = () => false;
+import { useEffect, useState } from "react";
 
 export default function LoadingScreen() {
-  const hasLoadedBefore = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
-  const [loading, setLoading] = useState(!hasLoadedBefore);
+  const [loading, setLoading] = useState(() => {
+    try {
+      if (typeof window !== "undefined") {
+        return !sessionStorage.getItem("loaded");
+      }
+    } catch (e) {
+      // Ignore sessionStorage security block (e.g. strict private mode)
+    }
+    return true;
+  });
 
   useEffect(() => {
     if (!loading) return;
     const hide = () => {
       setLoading(false);
-      try { sessionStorage.setItem("loaded", "1"); } catch { /* ignore */ }
+      try {
+        sessionStorage.setItem("loaded", "1");
+      } catch (e) {
+        // Ignore storage block
+      }
     };
     const timer = setTimeout(hide, 1200);
     if (document.readyState === "complete") {

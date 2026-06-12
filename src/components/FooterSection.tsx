@@ -1,5 +1,24 @@
+import { useState, useEffect } from "react";
+
 export default function FooterSection() {
   const year = new Date().getFullYear();
+  const [count, setCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    const SITE_ID = "gkr-portfolio";
+    const bumped = localStorage.getItem(`${SITE_ID}-bumped`);
+    if (!bumped) {
+      fetch("https://abacus.jasoncameron.dev/hit/krishnaraju7674/gkr-portfolio")
+        .then((r) => r.json())
+        .then((d) => { if (d.value) { setCount(d.value); localStorage.setItem(`${SITE_ID}-bumped`, "1"); } })
+        .catch(() => {});
+    } else {
+      fetch("https://abacus.jasoncameron.dev/get/krishnaraju7674/gkr-portfolio")
+        .then((r) => r.json())
+        .then((d) => { if (d.value) setCount(d.value); })
+        .catch(() => {});
+    }
+  }, []);
 
   return (
     <footer className="bg-[var(--bg)] border-t border-[var(--border)] px-5 sm:px-8 md:px-10 py-10 sm:py-12" role="contentinfo">
@@ -11,6 +30,14 @@ export default function FooterSection() {
           <p className="text-[var(--text-muted)] text-xs font-light">
             © {year} Krishnam Raju. Built with React, TypeScript & Framer Motion.
           </p>
+          <div className="mt-1 flex items-center gap-1.5 text-[var(--text-muted)] text-[10px] font-mono">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500/60 animate-pulse" />
+            {count !== null ? (
+              <span>Viewed {count.toLocaleString()} times by recruiters worldwide</span>
+            ) : (
+              <span>Tracking views...</span>
+            )}
+          </div>
         </div>
 
         <div className="flex items-center gap-5">

@@ -7,11 +7,22 @@
 html, body, #root { background: var(--bg); color: var(--text); }
 html { scroll-behavior: smooth; }
 
-/* Performance: content-visibility for sections below the fold */
-section { content-visibility: auto; contain-intrinsic-size: 600px; }
-html.lenis { scroll-behavior: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto; }
-.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+html.lenis {
+  height: auto;
+}
+html.lenis,
+html.lenis body {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
 
 body {
   font-family: "Kanit", sans-serif;

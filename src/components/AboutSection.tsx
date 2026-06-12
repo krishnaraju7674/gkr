@@ -3,6 +3,7 @@ import AnimatedText from "./AnimatedText";
 import ContactButton from "./ContactButton";
 import AnimatedCounter from "./AnimatedCounter";
 import RadarChart from "./RadarChart";
+import Scroll3D from "./Scroll3D";
 
 import { motion } from "framer-motion";
 
@@ -123,7 +124,11 @@ export default function AboutSection() {
           style={{ fontSize: "clamp(0.9rem, 1.8vw, 1.2rem)" }}
         />
 
-        <FadeIn delay={0.2} y={30} className="w-full max-w-[500px] mt-8 sm:mt-10 md:mt-12">
+        <FadeIn delay={0.15} y={30} className="my-8 sm:my-10">
+          <Scroll3D />
+        </FadeIn>
+
+        <FadeIn delay={0.2} y={30} className="w-full max-w-[500px]">
           <div className="grid grid-cols-4 gap-3">
             {[
               { val: 19, suf: "+", label: "Projects" },
