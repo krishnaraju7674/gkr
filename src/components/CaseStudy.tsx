@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useRef } from "react";
 
 interface CaseStudyData {
   title: string;
@@ -87,6 +88,21 @@ const caseStudies: Record<string, CaseStudyData> = {
 
 export default function CaseStudy({ projectName, onClose }: { projectName: string; onClose: () => void }) {
   const data = caseStudies[projectName];
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  // Escape key closes modal
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleEsc);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+
   if (!data) return null;
 
   return (
@@ -103,14 +119,15 @@ export default function CaseStudy({ projectName, onClose }: { projectName: strin
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 40, scale: 0.95 }}
           transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-          className="w-full max-w-3xl rounded-3xl border border-border bg-card p-6 sm:p-8 md:p-10 my-8 relative"
+          className="w-full max-w-3xl rounded-3xl border border-[var(--border)] bg-[var(--card-bg)] p-6 sm:p-8 md:p-10 my-8 relative"
+                    ref={modalRef}
         >
-          <button onClick={onClose} className="absolute top-4 right-4 w-8 h-8 rounded-full border border-border flex items-center justify-center text-foreground hover:border-foreground/30 transition-colors text-sm">
+          <button onClick={onClose} className="absolute top-4 right-4 w-8 h-8 rounded-full border border-[var(--border)] flex items-center justify-center text-[var(--text)] hover:border-[var(--text)]/30 transition-colors text-sm" aria-label="Close case study">
             ✕
           </button>
 
           <div className="flex items-center gap-3 mb-6">
-            <span className="text-muted text-xs uppercase tracking-wider font-medium">Case Study</span>
+            <span className="text-[var(--text-muted)] text-xs uppercase tracking-wider font-medium">Case Study</span>
           </div>
 
           <h2 className="hero-heading font-black uppercase leading-none tracking-tight mb-6" style={{ fontSize: "clamp(1.8rem, 5vw, 3rem)" }}>
@@ -125,23 +142,23 @@ export default function CaseStudy({ projectName, onClose }: { projectName: strin
           <Section title="Solution">{data.solution}</Section>
 
           <div className="mb-6">
-            <h3 className="text-primary font-semibold text-xs uppercase tracking-wide mb-3">Tech Stack</h3>
+            <h3 className="text-[var(--text-secondary)] font-semibold text-xs uppercase tracking-wide mb-3">Tech Stack</h3>
             <div className="flex flex-wrap gap-2">
               {data.tech.map((t) => (
-                <span key={t} className="text-foreground text-xs px-3 py-1.5 rounded-full border border-border">{t}</span>
+                <span key={t} className="text-[var(--text)] text-xs px-3 py-1.5 rounded-full border border-[var(--border)]">{t}</span>
               ))}
             </div>
           </div>
 
           <div className="mb-6">
-            <h3 className="text-primary font-semibold text-xs uppercase tracking-wide mb-3">Architecture</h3>
+            <h3 className="text-[var(--text-secondary)] font-semibold text-xs uppercase tracking-wide mb-3">Architecture</h3>
             <div className="flex flex-col items-center gap-0">
               {data.architecture.map((a, i) => (
                 <div key={a.layer} className="flex flex-col items-center w-full">
-                  <div className="flex items-center gap-3 p-2.5 rounded-xl border border-border bg-background w-full">
-                    <span className="text-muted text-xs font-mono w-8 shrink-0">{i + 1}</span>
-                    <span className="text-primary text-xs uppercase tracking-wider font-medium w-24 shrink-0">{a.layer}</span>
-                    <span className="text-foreground text-xs opacity-80">{a.tech}</span>
+                  <div className="flex items-center gap-3 p-2.5 rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] w-full">
+                    <span className="text-[var(--text-muted)] text-xs font-mono w-8 shrink-0">{i + 1}</span>
+                    <span className="text-[var(--text-secondary)] text-xs uppercase tracking-wider font-medium w-24 shrink-0">{a.layer}</span>
+                    <span className="text-[var(--text)] text-xs opacity-80">{a.tech}</span>
                   </div>
                   {i < data.architecture.length - 1 && (
                     <div className="flex flex-col items-center py-1">
@@ -159,11 +176,11 @@ export default function CaseStudy({ projectName, onClose }: { projectName: strin
           <Section title="Challenges">{data.challenges}</Section>
 
           <div className="mb-6">
-            <h3 className="text-primary font-semibold text-xs uppercase tracking-wide mb-3">Results</h3>
+            <h3 className="text-[var(--text-secondary)] font-semibold text-xs uppercase tracking-wide mb-3">Results</h3>
             <ul className="flex flex-col gap-2">
               {data.results.map((r) => (
-                <li key={r} className="flex items-start gap-2 text-foreground text-xs sm:text-sm font-light">
-                  <span className="text-primary mt-0.5 shrink-0">▹</span>
+                <li key={r} className="flex items-start gap-2 text-[var(--text)] text-xs sm:text-sm font-light">
+                  <span className="text-[var(--text-secondary)] mt-0.5 shrink-0">▹</span>
                   {r}
                 </li>
               ))}
@@ -171,11 +188,11 @@ export default function CaseStudy({ projectName, onClose }: { projectName: strin
           </div>
 
           <div className="mb-6">
-            <h3 className="text-primary font-semibold text-xs uppercase tracking-wide mb-3">Future Improvements</h3>
+            <h3 className="text-[var(--text-secondary)] font-semibold text-xs uppercase tracking-wide mb-3">Future Improvements</h3>
             <ul className="flex flex-col gap-2">
               {data.future.map((f) => (
-                <li key={f} className="flex items-start gap-2 text-foreground text-xs sm:text-sm font-light">
-                  <span className="text-muted mt-0.5 shrink-0">→</span>
+                <li key={f} className="flex items-start gap-2 text-[var(--text)] text-xs sm:text-sm font-light">
+                  <span className="text-[var(--text-muted)] mt-0.5 shrink-0">→</span>
                   {f}
                 </li>
               ))}
@@ -193,7 +210,7 @@ export default function CaseStudy({ projectName, onClose }: { projectName: strin
               Live Demo
             </a>
             <a href={data.github} target="_blank" rel="noopener noreferrer"
-              className="px-5 py-2.5 rounded-full border border-foreground/30 text-foreground text-xs font-medium uppercase tracking-wider hover:bg-foreground/10 transition-all">
+              className="px-5 py-2.5 rounded-full border border-[var(--text)]/30 text-[var(--text)] text-xs font-medium uppercase tracking-wider hover:bg-[var(--text)]/10 transition-all">
               View Code
             </a>
           </div>
@@ -206,8 +223,8 @@ export default function CaseStudy({ projectName, onClose }: { projectName: strin
 function Section({ title, children }: { title: string; children: string }) {
   return (
     <div className="mb-6">
-      <h3 className="text-primary font-semibold text-xs uppercase tracking-wide mb-2">{title}</h3>
-      <p className="text-foreground text-xs sm:text-sm font-light leading-relaxed opacity-80">{children}</p>
+      <h3 className="text-[var(--text-secondary)] font-semibold text-xs uppercase tracking-wide mb-2">{title}</h3>
+      <p className="text-[var(--text)] text-xs sm:text-sm font-light leading-relaxed opacity-80">{children}</p>
     </div>
   );
 }

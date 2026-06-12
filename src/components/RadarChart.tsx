@@ -45,7 +45,11 @@ export default function RadarChart() {
           const angle = (Math.PI * 2 * i) / count - Math.PI / 2;
           const x = cx + radius * Math.cos(angle);
           const y = cy + radius * Math.sin(angle);
-          i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+          if (i === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
         }
         ctx.strokeStyle = gridColor;
         ctx.lineWidth = 1;
@@ -71,7 +75,11 @@ export default function RadarChart() {
         const angle = (Math.PI * 2 * idx) / count - Math.PI / 2;
         const x = cx + val * Math.cos(angle);
         const y = cy + val * Math.sin(angle);
-        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        if (i === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
       }
       ctx.closePath();
       ctx.fillStyle = "rgba(182,0,168,0.15)";

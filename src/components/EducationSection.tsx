@@ -33,11 +33,10 @@ const certifications = [
 
 export default function EducationSection() {
   return (
-    <section id="education" className="bg-[var(--bg)] px-5 sm:px-8 md:px-10 py-20 sm:py-24 md:py-28">
+    <section id="education" className="bg-[var(--bg)] px-5 sm:px-8 md:px-10 py-20 sm:py-24 md:py-28 scroll-mt-24">
       <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 sm:gap-16 md:gap-20">
         <FadeIn delay={0} y={30}>
-          <h2 className="hero-heading font-black uppercase leading-none tracking-tight mb-8 sm:mb-10"
-            style={{ fontSize: "clamp(2rem, 6vw, 3.5rem)" }}>
+          <h2 className="section-title text-[var(--text)] mb-8 sm:mb-10">
             Education
           </h2>
           <div className="flex flex-col gap-6 sm:gap-8">
@@ -61,8 +60,7 @@ export default function EducationSection() {
         </FadeIn>
 
         <FadeIn delay={0.15} y={30}>
-          <h2 className="hero-heading font-black uppercase leading-none tracking-tight mb-8 sm:mb-10"
-            style={{ fontSize: "clamp(2rem, 6vw, 3.5rem)" }}>
+          <h2 className="section-title text-[var(--text)] mb-8 sm:mb-10">
             Certifications
           </h2>
           <div className="flex flex-col gap-3 sm:gap-4">

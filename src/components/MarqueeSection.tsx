@@ -32,12 +32,18 @@ export default function MarqueeSection() {
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      if (!sectionRef.current) return;
-      const rect = sectionRef.current.getBoundingClientRect();
-      const sectionTop = rect.top + window.scrollY;
-      const val = (window.scrollY - sectionTop + window.innerHeight) * 0.3;
-      setOffset(val);
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        if (!sectionRef.current) { ticking = false; return; }
+        const rect = sectionRef.current.getBoundingClientRect();
+        const sectionTop = rect.top + window.scrollY;
+        const val = (window.scrollY - sectionTop + window.innerHeight) * 0.3;
+        setOffset(val);
+        ticking = false;
+      });
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -46,19 +52,19 @@ export default function MarqueeSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-background pt-24 sm:pt-32 md:pt-40 pb-10 overflow-hidden"
+      className="bg-[var(--bg)] pt-24 sm:pt-32 md:pt-40 pb-10 overflow-hidden"
     >
       <div
         className="flex gap-3 mb-3"
         style={{ willChange: "transform", transform: `translateX(${offset - 200}px)` }}
       >
-        {[...row1Images, ...row1Images, ...row1Images].map((src, i) => (
+        {[...row1Images, ...row1Images].map((src, i) => (
           <img
             key={`r1-${i}`}
             src={src}
             alt=""
             aria-hidden="true"
-            className="w-[420px] h-[270px] rounded-2xl object-cover shrink-0"
+            className="w-[280px] sm:w-[420px] h-[180px] sm:h-[270px] rounded-2xl object-cover shrink-0"
             loading="lazy"
           />
         ))}
@@ -68,13 +74,13 @@ export default function MarqueeSection() {
         className="flex gap-3"
         style={{ willChange: "transform", transform: `translateX(${-(offset - 200)}px)` }}
       >
-        {[...row2Images, ...row2Images, ...row2Images].map((src, i) => (
+        {[...row2Images, ...row2Images].map((src, i) => (
           <img
             key={`r2-${i}`}
             src={src}
             alt=""
             aria-hidden="true"
-            className="w-[420px] h-[270px] rounded-2xl object-cover shrink-0"
+            className="w-[280px] sm:w-[420px] h-[180px] sm:h-[270px] rounded-2xl object-cover shrink-0"
             loading="lazy"
           />
         ))}

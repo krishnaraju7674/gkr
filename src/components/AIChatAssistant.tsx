@@ -1,20 +1,133 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const kb: Record<string, string> = {
-  "who is krishnam": "Krishnam Raju is a Full Stack Developer & AI Product Builder. He's currently pursuing B.Tech in IT at Vignana Bharathi Institute of Technology with 8.0 CGPA. He specializes in building AI-powered web platforms using Next.js, Supabase, TypeScript, and modern cloud technologies.",
-  "what projects": "Krishnam has built 19+ projects including VBIT Nexus AI (AI university ecosystem serving 500+ students), Carently IND (car rental marketplace with Stripe), Voyago AI Travel (AI travel planner with Gemini), Crop Care AI (85% disease detection accuracy), and more. Type 'projects' in the terminal above for the full list.",
-  "what skills": "Krishnam's tech stack: Frontend (Next.js, React, TypeScript, Tailwind), Backend (Supabase, Node.js, PostgreSQL), AI/ML (Gemini API, LangChain, Prompt Engineering), Cloud (Vercel, Supabase, Hugging Face), Salesforce (LWC, Apex, SOQL).",
-  "what experience": "Full Stack Dev Intern at NoviTech R&D (2026), Salesforce Developer Trainee (ongoing), Generative AI Intern, and Cybersecurity Intern. He has 2+ years of building experience.",
-  "contact": "Email: gkr.7674@gmail.com | GitHub: github.com/krishnaraju7674 | LinkedIn: linkedin.com/in/krishnam-raju-g7674 | Twitter: x.com/Gkr7674 | Calendly: calendly.com/gkr7674",
-  "resume": "Krishnam's resume is available at the Resume button at the top of the page. It opens an interactive preview where you can view or download the PDF.",
-  "case study": "Krishnam has detailed case studies for 3 top projects: VBIT Nexus AI, Carently IND, and Voyago AI Travel. Each covers Problem, Solution, Architecture, Challenges, Results, and Future Improvements. Click the 'Case Study' button on any of those project cards to read them.",
-  "certifications": "Salesforce Developer (LWC, Apex, SOQL) | Generative AI & Prompt Engineering | Cybersecurity — OWASP Top 10 | Full Stack Development — NoviTech R&D | Python Programming & Automation | React & TypeScript Advanced",
-  "education": "B.Tech IT at VBIT (2023-2027, 8.0 CGPA) | Higher Secondary at Sri Chaitanya (90%) | Secondary at ZP High School (100%)",
-  "github": "github.com/krishnaraju7674 — 19+ repos, actively building. Check out the GitHub Activity section below for the contribution chart and live stats.",
-  "blog": "Krishnam writes about AI, full-stack development, and building production products at gkr7674.hashnode.dev. Topics include building AI agents with Gemini, Supabase vs MongoDB, and more.",
-  "hiring": "Krishnam is currently seeking Full Stack Developer and AI Engineering Internships (remote & on-site). He's also available for freelance projects. Check the hiring banner at the top!",
-};
+const kb: { keys: string[]; answer: string }[] = [
+  { keys: ["who", "krishnam", "about", "introduce", "tell me"], answer: "Krishnam Raju is a Full Stack Developer & AI Product Builder. He's currently pursuing B.Tech in IT at Vignana Bharathi Institute of Technology with 8.0 CGPA. He specializes in building AI-powered web platforms using Next.js, Supabase, TypeScript, and modern cloud technologies." },
+  { keys: ["project", "built", "build", "work", "made", "portfolio"], answer: "Krishnam has built 19+ projects including VBIT Nexus AI (AI university ecosystem serving 500+ students), Carently IND (car rental marketplace with Stripe), Voyago AI Travel (AI travel planner with Gemini), Crop Care AI (85% disease detection accuracy), and more. Type 'projects' in the terminal above for the full list." },
+  { keys: ["skill", "tech", "stack", "know", "language", "framework", "tool", "can do"], answer: "Krishnam's tech stack: Frontend (Next.js, React, TypeScript, Tailwind), Backend (Supabase, Node.js, PostgreSQL), AI/ML (Gemini API, LangChain, Prompt Engineering), Cloud (Vercel, Supabase, Hugging Face), Salesforce (LWC, Apex, SOQL)." },
+  { keys: ["experience", "intern", "job", "work experience", "employ"], answer: "Full Stack Dev Intern at NoviTech R&D (2026), Salesforce Developer Trainee (ongoing), Generative AI Intern, and Cybersecurity Intern. He has 2+ years of building experience." },
+  { keys: ["contact", "email", "reach", "hire", "talk", "connect", "call"], answer: "Email: gkr.7674@gmail.com | GitHub: github.com/krishnaraju7674 | LinkedIn: linkedin.com/in/krishnam-raju-g7674 | Twitter: x.com/Gkr7674 | Calendly: calendly.com/gkr7674" },
+  { keys: ["resume", "cv", "pdf"], answer: "Krishnam's resume is available at the Resume button at the top of the page. It opens an interactive preview where you can view or download the PDF." },
+  { keys: ["case study", "case", "study", "deep dive"], answer: "Krishnam has detailed case studies for 3 top projects: VBIT Nexus AI, Carently IND, and Voyago AI Travel. Each covers Problem, Solution, Architecture, Challenges, Results, and Future Improvements. Click the 'Case Study' button on any of those project cards to read them." },
+  { keys: ["certif", "cert", "badge", "course"], answer: "Salesforce Developer (LWC, Apex, SOQL) | Generative AI & Prompt Engineering | Cybersecurity — OWASP Top 10 | Full Stack Development — NoviTech R&D | Python Programming & Automation | React & TypeScript Advanced" },
+  { keys: ["education", "school", "college", "degree", "study", "university", "cgpa"], answer: "B.Tech IT at VBIT (2023-2027, 8.0 CGPA) | Higher Secondary at Sri Chaitanya (90%) | Secondary at ZP High School (100%)" },
+  { keys: ["github", "repo", "code", "open source"], answer: "github.com/krishnaraju7674 — 19+ repos, actively building. Check out the GitHub Activity section below for the contribution chart and live stats." },
+  { keys: ["blog", "article", "write", "hashnode"], answer: "Krishnam writes about AI, full-stack development, and building production products at gkr7674.hashnode.dev. Topics include building AI agents with Gemini, Supabase vs MongoDB, and more." },
+  { keys: ["hiring", "available", "looking", "seeking", "freelance", "opportunity"], answer: "Krishnam is currently seeking Full Stack Developer and AI Engineering Internships (remote & on-site). He's also available for freelance projects. Check the hiring banner at the top!" },
+];
+
+function getAnswer(input: string): string {
+  const lower = input.toLowerCase().trim();
+  
+  const stopwords = new Set([
+    "a", "an", "the", "about", "his", "he", "is", "of", "to", "in", "for", "with", "on", "at", "by", 
+    "from", "how", "what", "who", "where", "why", "can", "you", "me", "tell", "show", "give", "get",
+    "please", "krishnam", "raju"
+  ]);
+  
+  const queryWords = lower.split(/[\s,?.!]+/).filter(w => w.length > 1 && !stopwords.has(w));
+
+  if (/\b(hi|hello|hey|heya|sup|yo)\b/.test(lower)) {
+    return "Hey there! I'm Krishnam's AI assistant. Ask me anything about his skills, projects, experience, or how to reach him!";
+  }
+  if (/thank/.test(lower)) {
+    return "You're welcome! Feel free to ask anything else. Krishnam is always happy to connect!";
+  }
+
+  let bestMatch = "";
+  let bestScore = 0;
+
+  for (const entry of kb) {
+    let score = 0;
+    for (const key of entry.keys) {
+      const keyWords = key.toLowerCase().split(/[\s,?.!]+/).filter(w => w.length > 1 && !stopwords.has(w));
+      
+      let keyWordMatches = 0;
+      for (const qw of queryWords) {
+        if (keyWords.some(kw => kw.includes(qw) || qw.includes(kw))) {
+          keyWordMatches++;
+        }
+      }
+      
+      const keyScore = keyWordMatches / Math.max(1, keyWords.length);
+      if (keyScore > score) {
+        score = keyScore;
+      }
+      
+      if (lower.includes(key)) {
+        score = Math.max(score, 0.5);
+      }
+    }
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestMatch = entry.answer;
+    }
+  }
+
+  if (bestScore > 0.2) return bestMatch;
+  return "I don't have that information yet. Try asking about: who he is, projects, skills, experience, contact, resume, case studies, certifications, education, GitHub, blog, or hiring!";
+}
+
+function ThinkingLog({ onComplete }: { onComplete: () => void }) {
+  const [steps, setSteps] = useState<string[]>([]);
+
+  useEffect(() => {
+    const logSteps = [
+      "✦ Analyzing query tokens...",
+      "├─ Filtering stopwords & parsing intent",
+      "├─ Scanning portfolio database...",
+      "└─ Formatting response"
+    ];
+
+    let index = 0;
+    const interval = setInterval(() => {
+      setSteps((prev) => [...prev, logSteps[index]]);
+      index++;
+      if (index >= logSteps.length) {
+        clearInterval(interval);
+        const timer = setTimeout(onComplete, 350);
+        return () => clearTimeout(timer);
+      }
+    }, 250);
+
+    return () => clearInterval(interval);
+  }, [onComplete]);
+
+  return (
+    <div className="font-mono text-[10px] sm:text-xs text-green-400/80 leading-relaxed space-y-0.5 select-none py-0.5">
+      {steps.map((step, idx) => (
+        <div key={idx}>{step}</div>
+      ))}
+      {steps.length < 4 && (
+        <span className="inline-block w-1.5 h-3 bg-green-400/80 ml-1 animate-pulse" />
+      )}
+    </div>
+  );
+}
+
+function StreamingText({ text, onComplete }: { text: string; onComplete: () => void }) {
+  const [displayedText, setDisplayedText] = useState("");
+
+  useEffect(() => {
+    const words = text.split(" ");
+    let index = 0;
+    
+    const interval = setInterval(() => {
+      if (index <= words.length) {
+        setDisplayedText(words.slice(0, index).join(" "));
+        index++;
+      } else {
+        clearInterval(interval);
+        onComplete();
+      }
+    }, 25);
+
+    return () => clearInterval(interval);
+  }, [text, onComplete]);
+
+  return <span>{displayedText}</span>;
+}
 
 const quickReplies = [
   "Who is Krishnam?",
@@ -23,24 +136,14 @@ const quickReplies = [
   "How to contact him?",
 ];
 
-function getAnswer(input: string): string {
-  const lower = input.toLowerCase().trim();
-  for (const [key, value] of Object.entries(kb)) {
-    const keywords = key.split(" ");
-    if (keywords.every((k) => lower.includes(k))) return value;
-  }
-  if (lower.includes("hi") || lower.includes("hello") || lower.includes("hey")) {
-    return "Hey there! I'm Krishnam's AI assistant. Ask me anything about his skills, projects, experience, or how to reach him!";
-  }
-  if (lower.includes("thank")) {
-    return "You're welcome! Feel free to ask anything else. Krishnam is always happy to connect!";
-  }
-  return "I don't have that information yet. Try asking about: who he is, projects, skills, experience, contact, resume, case studies, certifications, education, GitHub, blog, or hiring!";
-}
-
 export default function AIChatAssistant() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<{ from: "bot" | "user"; text: string }[]>([
+  const [messages, setMessages] = useState<{ 
+    from: "bot" | "user"; 
+    text: string;
+    isThinking?: boolean;
+    isStreaming?: boolean;
+  }[]>([
     { from: "bot", text: "Hi! I'm Krishnam's AI assistant. Ask me anything about his work!" },
   ]);
   const [input, setInput] = useState("");
@@ -66,10 +169,11 @@ export default function AIChatAssistant() {
   const handleSend = useCallback(
     (text: string) => {
       if (!text.trim()) return;
-      setMessages((m) => [...m, { from: "user", text: text.trim() }]);
-      setTimeout(() => {
-        setMessages((m) => [...m, { from: "bot", text: getAnswer(text.trim()) }]);
-      }, 400 + Math.random() * 400);
+      setMessages((m) => [
+        ...m,
+        { from: "user", text: text.trim() },
+        { from: "bot", text: getAnswer(text.trim()), isThinking: true },
+      ]);
     },
     []
   );
@@ -100,19 +204,19 @@ export default function AIChatAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-            className="fixed bottom-24 right-6 z-40 w-[340px] sm:w-[380px] rounded-2xl border border-border bg-card shadow-2xl overflow-hidden"
+            className="fixed bottom-24 right-6 z-40 w-[340px] sm:w-[380px] rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] shadow-2xl overflow-hidden"
             role="dialog"
             aria-modal="true"
             aria-label="AI chat assistant"
           >
-            <div className="flex items-center gap-3 px-4 py-3 border-b border-border">
+            <div className="flex items-center gap-3 px-4 py-3 border-b border-[var(--border)]">
               <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white"
                 style={{ background: "linear-gradient(123deg, #B600A8, #7621B0)" }}>
                 AI
               </div>
               <div>
-                <p className="text-foreground text-sm font-medium">Krishnam AI</p>
-                <p className="text-muted text-[10px]">Ask me anything</p>
+                <p className="text-[var(--text)] text-sm font-medium">Krishnam AI</p>
+                <p className="text-[var(--text-muted)] text-[10px]">Ask me anything</p>
               </div>
             </div>
 
@@ -128,7 +232,7 @@ export default function AIChatAssistant() {
                     className={`max-w-[85%] p-3 rounded-2xl text-xs sm:text-sm leading-relaxed ${
                       msg.from === "user"
                         ? "text-white"
-                        : "text-foreground border border-border"
+                        : "text-[var(--text)] border border-[var(--border)]"
                     }`}
                     style={
                       msg.from === "user"
@@ -138,7 +242,30 @@ export default function AIChatAssistant() {
                         : {}
                     }
                   >
-                    {msg.text}
+                    {msg.isThinking ? (
+                      <ThinkingLog
+                        onComplete={() => {
+                          setMessages((prev) =>
+                            prev.map((m, idx) =>
+                              idx === i ? { ...m, isThinking: false, isStreaming: true } : m
+                            )
+                          );
+                        }}
+                      />
+                    ) : msg.isStreaming ? (
+                      <StreamingText
+                        text={msg.text}
+                        onComplete={() => {
+                          setMessages((prev) =>
+                            prev.map((m, idx) =>
+                              idx === i ? { ...m, isStreaming: false } : m
+                            )
+                          );
+                        }}
+                      />
+                    ) : (
+                      msg.text
+                    )}
                   </div>
                 </div>
               ))}
@@ -151,7 +278,7 @@ export default function AIChatAssistant() {
                   <button
                     key={qr}
                     onClick={() => handleSend(qr)}
-                    className="text-[10px] sm:text-xs px-2.5 py-1 rounded-full border border-border text-primary hover:border-foreground/30 transition-colors"
+                    className="text-[10px] sm:text-xs px-2.5 py-1 rounded-full border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--text)]/30 transition-colors"
                   >
                     {qr}
                   </button>
@@ -161,7 +288,7 @@ export default function AIChatAssistant() {
 
             <form
               onSubmit={(e) => { e.preventDefault(); handleSend(input); setInput(""); }}
-              className="flex items-center gap-2 p-3 border-t border-border"
+              className="flex items-center gap-2 p-3 border-t border-[var(--border)]"
             >
               <input
                 ref={inputRef}
@@ -171,7 +298,7 @@ export default function AIChatAssistant() {
                 placeholder="Ask anything..."
                 autoComplete="off"
                 aria-label="Ask the AI assistant"
-                className="flex-1 bg-transparent text-foreground text-xs sm:text-sm outline-none placeholder-muted"
+                className="flex-1 bg-transparent text-[var(--text)] text-xs sm:text-sm outline-none placeholder-[var(--text-muted)]"
               />
               <button
                 type="submit"

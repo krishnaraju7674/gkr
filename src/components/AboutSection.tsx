@@ -29,7 +29,7 @@ const skillsData = [
 
 export default function AboutSection() {
   return (
-    <section id="about" className="relative bg-[var(--bg)]">
+    <section id="about" className="relative bg-[var(--bg)] scroll-mt-24">
       <FadeIn delay={0.1} x={-80} y={0} duration={0.9} className="absolute top-[4%] left-[1%] sm:left-[2%] md:left-[4%] z-10">
         <img
           src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/moon_icon.11395d36.png"

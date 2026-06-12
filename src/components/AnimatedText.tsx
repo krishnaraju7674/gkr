@@ -15,19 +15,15 @@ export default function AnimatedText({ text, className, style }: AnimatedTextPro
   });
 
   const chars = text.split("");
-  const opacities = chars.map((_, i) => {
-    const start = i / chars.length;
-    const end = (i + 1) / chars.length;
-    return useTransform(scrollYProgress, [start, end], [0.2, 1]);
-  });
+  const opacity = useTransform(scrollYProgress, [0, 1], [0.2, 1]);
 
   return (
-    <p ref={ref} className={className} style={style}>
+    <motion.p ref={ref} className={className} style={{ ...style, opacity }}>
       {chars.map((char, i) => (
-        <motion.span key={i} style={{ opacity: opacities[i] }}>
+        <span key={i}>
           {char === " " ? "\u00A0" : char}
-        </motion.span>
+        </span>
       ))}
-    </p>
+    </motion.p>
   );
 }

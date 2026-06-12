@@ -14,9 +14,9 @@
     <meta property="og:description" content="Building intelligent web experiences with Full Stack Development and AI." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://gkrit.in" />
-    <meta property="og:image" content="https://gkrit.in/og-image.png" />
+    <meta property="og:image" content="https://gkrit.in/profile.jpg" />
 
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Krishnam Raju | Full Stack Developer & AI Builder" />
     <meta name="twitter:description" content="Building intelligent web experiences with Full Stack Development and AI." />
 
@@ -44,9 +44,29 @@
     }
     </script>
   </head>
-  <body>
+  <body style="background:#0C0C0C;color:#D7E2EA">
+    <script>
+      // Set theme before paint to avoid white flash
+      (function() {
+        try {
+          var t = localStorage.getItem('theme');
+          if (t === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            document.body.style.background = '#F5F5F0';
+            document.body.style.color = '#1A1A1A';
+          }
+        } catch(e) {}
+      })();
+    </script>
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
+      }
+    </script>
   </body>
 </html>

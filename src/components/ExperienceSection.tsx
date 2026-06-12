@@ -26,10 +26,9 @@ const experiences = [
 
 export default function ExperienceSection() {
   return (
-    <section className="bg-[var(--bg)] px-5 sm:px-8 md:px-10 py-20 sm:py-24 md:py-28">
+    <section id="experience" className="bg-[var(--bg)] px-5 sm:px-8 md:px-10 py-20 sm:py-24 md:py-28 scroll-mt-24">
       <FadeIn delay={0} y={30}>
-        <h2 className="hero-heading font-black uppercase leading-none tracking-tight text-center mb-14 sm:mb-18 md:mb-20"
-          style={{ fontSize: "clamp(2.2rem, 8vw, 4rem)" }}>
+        <h2 className="section-title text-[var(--text)] text-center mb-14 sm:mb-18 md:mb-20">
           Experience
         </h2>
       </FadeIn>

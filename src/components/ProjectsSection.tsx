@@ -2,6 +2,7 @@ import { useRef, useCallback, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import LiveProjectButton from "./LiveProjectButton";
 import CaseStudy from "./CaseStudy";
+import SpotlightCard from "./SpotlightCard";
 
 function screenshotUrl(url: string) {
   return `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&overlay.browser=false&width=800&height=600`;
@@ -27,7 +28,7 @@ const allCategories = ["All", ...Array.from(new Set(projects.map((p) => p.catego
 function ProjectImage({ src, alt }: { src: string; alt: string }) {
   const [failed, setFailed] = useState(false);
   const [hover, setHover] = useState(false);
-  if (!src || failed) return <div className="w-full h-full rounded-[20px] sm:rounded-[30px]" style={{ background: "linear-gradient(135deg, #1A1A1A, #2A2A2A)" }} />;
+  if (!src || failed) return <div className="w-full h-full rounded-[20px] sm:rounded-[30px]" style={{ background: "linear-gradient(135deg, var(--border), #2A2A2A)" }} />;
   return (
     <div
       className="relative overflow-hidden rounded-[20px] sm:rounded-[30px]"
@@ -80,23 +81,25 @@ function ProjectCard({ project, index, totalCards, onCaseStudy }: { project: (ty
 
   return (
     <div ref={ref} className="sticky h-[80vh] flex items-start justify-center" style={{ top: "5rem", paddingTop: `${index * 20}px` }}>
-      <TiltCard className="w-full max-w-5xl">
-        <motion.div onClick={handleClick} style={{ scale, cursor: project.live ? "pointer" : "default" }}
-          className="rounded-[30px] sm:rounded-[40px] border-2 border-border bg-card p-4 sm:p-5 w-full hover:border-primary transition-colors duration-300">
+      <SpotlightCard className="w-full max-w-5xl rounded-[30px] sm:rounded-[40px]">
+        <TiltCard className="w-full">
+          <motion.div onClick={handleClick} style={{ scale, cursor: project.live ? "pointer" : "default" }}
+            className="rounded-[30px] sm:rounded-[40px] border-2 border-[var(--border)] bg-[var(--card-bg)] p-4 sm:p-5 w-full hover:border-[var(--text-secondary)] transition-colors duration-300"
+          >
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-5">
             <div className="flex-1 flex flex-col justify-between min-w-0">
               <div>
                 <div className="flex items-center gap-3 sm:gap-4 mb-2">
-                  <span className="font-black text-foreground leading-none" style={{ fontSize: "clamp(1.8rem, 5vw, 60px)" }}>{project.num}</span>
+                  <span className="font-black text-[var(--text)] leading-none" style={{ fontSize: "clamp(1.8rem, 5vw, 60px)" }}>{project.num}</span>
                   <div>
-                    <p className="text-foreground font-medium uppercase tracking-wide text-[10px] sm:text-xs">{project.category}</p>
-                    <h3 className="text-foreground font-medium uppercase" style={{ fontSize: "clamp(0.8rem, 1.6vw, 1.3rem)" }}>{project.name}</h3>
+                    <p className="text-[var(--text)] font-medium uppercase tracking-wide text-[10px] sm:text-xs">{project.category}</p>
+                    <h3 className="text-[var(--text)] font-medium uppercase" style={{ fontSize: "clamp(0.8rem, 1.6vw, 1.3rem)" }}>{project.name}</h3>
                   </div>
                 </div>
-                <p className="text-foreground/60 text-xs sm:text-sm font-light leading-relaxed mb-3">{project.desc}</p>
+                <p className="text-[var(--text)] opacity-60 text-xs sm:text-sm font-light leading-relaxed mb-3">{project.desc}</p>
                 <div className="flex flex-wrap gap-1.5 mb-3">
                   {project.tags.map((t) => (
-                    <span key={t} className="text-primary text-[9px] sm:text-[11px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-border">{t}</span>
+                    <span key={t} className="text-[var(--text-secondary)] text-[9px] sm:text-[11px] uppercase tracking-wider px-2 py-0.5 rounded-full border border-[var(--border)]">{t}</span>
                   ))}
                 </div>
               </div>
@@ -112,7 +115,7 @@ function ProjectCard({ project, index, totalCards, onCaseStudy }: { project: (ty
                 )}
                 {project.github && (
                   <a href={project.github} target="_blank" rel="noopener noreferrer"
-                    className="px-4 py-1.5 sm:px-5 sm:py-2 rounded-full border border-foreground/30 text-foreground text-[10px] sm:text-xs font-medium uppercase tracking-wider hover:bg-foreground/10 transition-all">Code</a>
+                    className="px-4 py-1.5 sm:px-5 sm:py-2 rounded-full border border-[var(--text)]/30 text-[var(--text)] text-[10px] sm:text-xs font-medium uppercase tracking-wider hover:bg-[var(--text)]/10 transition-all">Code</a>
                 )}
                 <LiveProjectButton href={project.live} className="px-4 py-1.5 sm:px-5 sm:py-2 text-[10px] sm:text-xs" />
               </div>
@@ -123,8 +126,9 @@ function ProjectCard({ project, index, totalCards, onCaseStudy }: { project: (ty
               </div>
             </div>
           </div>
-        </motion.div>
-      </TiltCard>
+          </motion.div>
+        </TiltCard>
+      </SpotlightCard>
     </div>
   );
 }
@@ -135,15 +139,16 @@ export default function ProjectsSection() {
   const filtered = activeFilter === "All" ? projects : projects.filter((p) => p.category === activeFilter);
 
   return (
-    <section id="projects" className="bg-background rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] -mt-10 sm:-mt-12 md:-mt-14 z-10 relative px-5 sm:px-8 md:px-10 pt-20 sm:pt-24 md:pt-28 pb-20">
+    <section id="projects" className="bg-[var(--bg)] rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] -mt-10 sm:-mt-12 md:-mt-14 z-10 relative px-5 sm:px-8 md:px-10 pt-20 sm:pt-24 md:pt-28 pb-20 scroll-mt-24">
       {caseStudyOpen && <CaseStudy projectName={caseStudyOpen} onClose={() => setCaseStudyOpen(null)} />}
-      <h2 className="hero-heading font-black uppercase leading-none tracking-tight text-center mb-8 sm:mb-10"
-        style={{ fontSize: "clamp(3rem, 12vw, 160px)" }}>Project</h2>
+      <h2 className="section-title text-[var(--text)] mb-8 sm:mb-10">
+        Project
+      </h2>
 
       <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-10 sm:mb-14">
         {allCategories.map((cat) => (
           <button key={cat} onClick={() => setActiveFilter(cat)}
-            className={`px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-xs sm:text-sm font-medium uppercase tracking-wider transition-all duration-300 ${activeFilter === cat ? "text-white" : "text-muted border border-border hover:border-foreground/30"}`}
+            className={`px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-xs sm:text-sm font-medium uppercase tracking-wider transition-all duration-300 ${activeFilter === cat ? "text-white" : "text-[var(--text-muted)] border border-[var(--border)] hover:border-[var(--text)]/30"}`}
             style={activeFilter === cat ? { background: "linear-gradient(123deg, #18011F 7%, #B600A8 37%, #7621B0 72%, #BE4C00 100%)", boxShadow: "0px 4px 4px rgba(181, 1, 167, 0.25)" } : undefined}>
             {cat}
           </button>

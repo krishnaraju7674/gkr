@@ -1,12 +1,9 @@
 import { useEffect, useRef } from "react";
 
 interface Particle {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  size: number;
-  opacity: number;
+  x: number; y: number;
+  vx: number; vy: number;
+  size: number; opacity: number;
 }
 
 export default function ParticleBackground() {
@@ -16,35 +13,40 @@ export default function ParticleBackground() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    const isMobile = window.innerWidth < 768;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (isMobile || prefersReducedMotion) {
+      canvas.style.display = "none";
+      return;
+    }
+
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const particles: Particle[] = [];
     let animationId: number;
-    let mouseX = -1000;
-    let mouseY = -1000;
+    let running = true;
 
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
 
-    const initParticles = () => {
-      const count = Math.min(Math.floor((canvas.width * canvas.height) / 12000), 80);
-      particles.length = 0;
-      for (let i = 0; i < count; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
-          size: Math.random() * 2 + 0.5,
-          opacity: Math.random() * 0.4 + 0.1,
-        });
-      }
-    };
+    const count = Math.min(Math.floor((window.innerWidth * window.innerHeight) / 20000), 50);
+
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        size: Math.random() * 1.5 + 0.5,
+        opacity: Math.random() * 0.3 + 0.1,
+      });
+    }
 
     const animate = () => {
+      if (!running) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       for (let i = 0; i < particles.length; i++) {
@@ -55,66 +57,46 @@ export default function ParticleBackground() {
         if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
 
-        const dx = mouseX - p.x;
-        const dy = mouseY - p.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 120) {
-          p.vx -= dx / dist * 0.002;
-          p.vy -= dy / dist * 0.002;
-        }
-
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(187, 204, 215, ${p.opacity})`;
         ctx.fill();
-
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const dx2 = p.x - p2.x;
-          const dy2 = p.y - p2.y;
-          const dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-          if (dist2 < 100) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(187, 204, 215, ${0.08 * (1 - dist2 / 100)})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
       }
 
       animationId = requestAnimationFrame(animate);
     };
 
-    const handleMouse = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    };
-
-    const handleTouch = (e: TouchEvent) => {
-      const touch = e.touches[0];
-      if (touch) {
-        mouseX = touch.clientX;
-        mouseY = touch.clientY;
+    const onMouse = (e: MouseEvent) => {
+      for (const p of particles) {
+        const dx = e.clientX - p.x;
+        const dy = e.clientY - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 100) {
+          p.vx -= (dx / dist) * 0.001;
+          p.vy -= (dy / dist) * 0.001;
+        }
       }
     };
 
     resize();
-    initParticles();
     animate();
 
     window.addEventListener("resize", resize);
-    window.addEventListener("resize", initParticles);
-    window.addEventListener("mousemove", handleMouse);
-    window.addEventListener("touchmove", handleTouch);
+    window.addEventListener("mousemove", onMouse, { passive: true });
+
+    const obs = new IntersectionObserver(([entry]) => {
+      running = entry.isIntersecting;
+      if (running) animate();
+      else cancelAnimationFrame(animationId);
+    }, { threshold: 0 });
+    obs.observe(canvas);
 
     return () => {
+      running = false;
       cancelAnimationFrame(animationId);
       window.removeEventListener("resize", resize);
-      window.removeEventListener("resize", initParticles);
-      window.removeEventListener("mousemove", handleMouse);
-      window.removeEventListener("touchmove", handleTouch);
+      window.removeEventListener("mousemove", onMouse);
+      obs.disconnect();
     };
   }, []);
 

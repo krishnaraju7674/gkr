@@ -1,4 +1,4 @@
-import FadeIn from "./FadeIn";
+import ScrollReveal from "./ScrollReveal";
 
 const services = [
   {
@@ -31,47 +31,40 @@ const services = [
 export default function ServicesSection() {
   return (
     <section
-      className="bg-white rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] px-5 sm:px-8 md:px-10 py-20 sm:py-24 md:py-32"
+      className="bg-[var(--section-alt-bg)] rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] px-5 sm:px-8 md:px-10 py-20 sm:py-24 md:py-32"
     >
-      <h2
-        className="text-[#0C0C0C] font-black uppercase text-center mb-16 sm:mb-20 md:mb-28"
-        style={{ fontSize: "clamp(3rem, 12vw, 160px)" }}
-      >
+      <h2 className="section-title text-[var(--section-alt-text)] mb-16 sm:mb-20 md:mb-28">
         What I Do
       </h2>
 
       <div className="max-w-5xl mx-auto">
         {services.map((item, i) => (
-          <FadeIn
-            key={item.num}
-            delay={i * 0.1}
-            y={20}
-          >
-            <div className="flex items-start py-8 sm:py-10 md:py-12 border-b last:border-b-0"
-              style={{ borderColor: "rgba(12, 12, 12, 0.15)" }}
-            >
-              <span
-                className="font-black text-[#0C0C0C] shrink-0 mr-6 sm:mr-8 md:mr-10 leading-none"
-                style={{ fontSize: "clamp(3rem, 10vw, 140px)" }}
-              >
-                {item.num}
-              </span>
-              <div className="flex flex-col justify-center">
-                <h3
-                  className="font-medium uppercase text-[#0C0C0C]"
-                  style={{ fontSize: "clamp(1rem, 2.2vw, 2.1rem)" }}
+          <ScrollReveal key={item.num} delay={i * 100}>
+            <div className="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10 mb-4 sm:mb-5 group hover:-translate-y-1">
+              <div className="flex items-start gap-5 sm:gap-6 md:gap-8">
+                <span
+                  className="font-black text-[var(--section-alt-text)] shrink-0 leading-none gradient-text"
+                  style={{ fontSize: "clamp(2.5rem, 8vw, 100px)" }}
                 >
-                  {item.name}
-                </h3>
-                <p
-                  className="font-light leading-relaxed max-w-2xl text-[#0C0C0C]"
-                  style={{ fontSize: "clamp(0.85rem, 1.6vw, 1.25rem)", opacity: 0.6 }}
-                >
-                  {item.desc}
-                </p>
+                  {item.num}
+                </span>
+                <div className="flex flex-col justify-center">
+                  <h3
+                    className="font-medium uppercase text-[var(--section-alt-text)]"
+                    style={{ fontSize: "clamp(0.95rem, 2vw, 1.8rem)" }}
+                  >
+                    {item.name}
+                  </h3>
+                  <p
+                    className="font-light leading-relaxed max-w-2xl text-[var(--section-alt-text)]"
+                    style={{ fontSize: "clamp(0.8rem, 1.5vw, 1.15rem)", opacity: 0.65 }}
+                  >
+                    {item.desc}
+                  </p>
+                </div>
               </div>
             </div>
-          </FadeIn>
+          </ScrollReveal>
         ))}
       </div>
     </section>

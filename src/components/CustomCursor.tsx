@@ -11,30 +11,52 @@ export default function CustomCursor() {
 
     let mx = -100, my = -100;
     let ringX = -100, ringY = -100;
+    let isAnimating = false;
+    let rafId: number;
+
+    const ring = () => {
+      const dx = mx - ringX;
+      const dy = my - ringY;
+      ringX += dx * 0.15;
+      ringY += dy * 0.15;
+
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translate3d(${ringX - 16}px, ${ringY - 16}px, 0)`;
+      }
+
+      if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) {
+        isAnimating = false;
+        return;
+      }
+
+      rafId = requestAnimationFrame(ring);
+    };
 
     const onMove = (e: MouseEvent) => {
       mx = e.clientX;
       my = e.clientY;
-      if (dotRef.current) dotRef.current.style.transform = `translate3d(${mx - 4}px, ${my - 4}px, 0)`;
-    };
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${mx - 4}px, ${my - 4}px, 0)`;
+      }
 
-    const ring = () => {
-      ringX += (mx - ringX) * 0.15;
-      ringY += (my - ringY) * 0.15;
-      if (ringRef.current) ringRef.current.style.transform = `translate3d(${ringX - 16}px, ${ringY - 16}px, 0)`;
-      requestAnimationFrame(ring);
+      if (!isAnimating) {
+        isAnimating = true;
+        rafId = requestAnimationFrame(ring);
+      }
     };
 
     window.addEventListener("mousemove", onMove, { passive: true });
-    requestAnimationFrame(ring);
 
-    return () => window.removeEventListener("mousemove", onMove);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (
     <>
-      <div ref={dotRef} className="fixed top-0 left-0 w-2 h-2 rounded-full bg-primary pointer-events-none z-[100] hidden md:block" style={{ transform: "translate3d(-100px, -100px, 0)" }} />
-      <div ref={ringRef} className="fixed top-0 left-0 w-8 h-8 rounded-full border border-primary/30 pointer-events-none z-[100] hidden md:block" style={{ transform: "translate3d(-100px, -100px, 0)" }} />
+      <div ref={dotRef} className="fixed top-0 left-0 w-2 h-2 rounded-full bg-[var(--text-secondary)] pointer-events-none z-[100] hidden md:block" style={{ transform: "translate3d(-100px, -100px, 0)" }} />
+      <div ref={ringRef} className="fixed top-0 left-0 w-8 h-8 rounded-full border border-[var(--text-secondary)]/30 pointer-events-none z-[100] hidden md:block" style={{ transform: "translate3d(-100px, -100px, 0)" }} />
     </>
   );
 }
